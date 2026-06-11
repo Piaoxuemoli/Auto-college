@@ -1,0 +1,44 @@
+# AgentSessionPatch — Session 补充 / 修正模板
+# 用途：成电小助手对未归档子 Agent session 使用 sessions_send 追加上下文或要求修正。
+# 规则：只能在原 task / constraints 边界内补充或修正；不得扩大任务范围。
+
+contract_version: agent-session-patch/v1
+
+# 必填：定位原 session
+session_id: "{session_id}"
+
+# Pipeline 型任务必填
+pipeline_id: "{pipeline_id}"
+
+# 必填：补充类型
+patch_type: missing_fields | revise_artifact | add_context | format_fix
+
+# 必填：原任务摘要
+original_task: "{原派单 task 摘要}"
+
+# 必填：问题说明
+issue:
+  - "{返回缺字段 / 产物不合格 / 上下文遗漏 / 格式不符合的位置}"
+
+# 必填：修正指令
+instruction:
+  - "{要求如何补齐或修正}"
+
+# 可选：新增上下文，只能补充原任务边界内的信息
+additional_context:
+  facts:
+    - "{补充事实或证据}"
+  source_paths:
+    - "{补充证据路径}"
+
+# 必填：要求子 Agent 仍按统一返回单回复
+return_contract: AgentResult.yaml
+
+# 禁止场景：
+# - 原 session 已归档。
+# - 新任务与原 task 无关。
+# - 试图把子 Agent 当作长期驻场 Agent。
+# - 跨越原 constraints 扩大任务范围。
+#
+# 修正轮次：优先对未归档原 session 用 sessions_send 修正；session 找不到/已归档/不可用时才重新派单。
+# 同一 session 最多修正 2 轮，2 轮后仍不合格则连同已有产出交用户决定。

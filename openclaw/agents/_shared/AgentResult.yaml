@@ -1,0 +1,43 @@
+# AgentResult — 子 Agent 返回单模板
+# 用途：子 Agent 完成、部分完成或失败时，统一返回给成电小助手。
+# 规则：返回的 session_id 必须与派单一致；不允许省略关键状态说明。
+
+contract_version: agent-result/v1
+
+# 必填：身份与任务锚点
+session_id: "{session_id}"
+agent_id: academic-agent | campus-info-agent | life-agent
+
+# Pipeline 型任务必填
+pipeline_id: "{pipeline_id}"
+
+# 必填：状态
+status: done | partial | failed
+
+# done 时：有产物必须填写；无产物必须在 summary 说明原因
+# partial / failed 时：填写已产生的可用产物
+artifacts:
+  - path: "workspace/{session_id}/..."
+    purpose: "{产物用途}"
+
+# 必填：一句话说明结果质量、完成情况或阻塞点
+summary: "{一句话质量摘要}"
+
+# 可为空数组；涉及风险、假设、缺口、待确认项时必须填写
+risks:
+  - "{风险或待确认项}"
+
+# 可为空数组；建议主 Agent 或用户下一步动作
+next_steps:
+  - "{建议后续动作}"
+
+# status=failed 时必填；其他状态为空
+failure_reason: "{仅 status=failed 时填写}"
+
+# 可选：标准错误码
+error_code: ""
+
+# 状态语义：
+# - done: 任务完成；summary 必填；有产物则 artifacts 必填；主 Agent 回复用户前必须校验产物文件真实存在且可读。
+# - partial: 部分完成或缺上下文；summary + risks/next_steps 必填。
+# - failed: 无法完成；failure_reason 必填，建议填写 error_code。

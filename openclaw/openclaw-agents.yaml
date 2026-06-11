@@ -1,0 +1,29 @@
+version: 1
+
+agents:
+  - id: uestc-assistant
+    name: 成电小助手
+    workspace: ./agents/uestc-assistant
+    default: true
+    enabled: true
+    # uestc-assistant 是主入口 Agent；subagents 定义其可委派的子 Agent 白名单。
+    subagents:
+      allowAgents:
+        - academic-agent
+        - campus-info-agent
+        - life-agent
+
+  - id: academic-agent
+    name: 学业助手
+    workspace: ./agents/academic-agent
+    enabled: true
+
+  - id: campus-info-agent
+    name: 校园信息助手
+    workspace: ./agents/campus-info-agent
+    enabled: true
+
+  - id: life-agent
+    name: 校园生活助手
+    workspace: ./agents/life-agent
+    enabled: true

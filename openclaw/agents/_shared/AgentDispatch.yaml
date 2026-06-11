@@ -1,0 +1,61 @@
+# AgentDispatch — 派单模板
+# 用途：成电小助手通过 sessions_spawn 创建子 Agent 任务时使用。
+# 派单纪律：task 直接承接用户原始请求，禁止加入主 Agent 的分析内容、推断或预填产物。
+
+contract_version: agent-dispatch/v1
+
+# 必填：会话标识
+session_id: "{session_id}"
+sender_id: "uestc-assistant"
+label: "{session_id}-{target_agent}-{purpose}"
+
+# 可选：任务型产物相关
+pipeline_id: "{pipeline_id}"
+
+# 必填：目标与任务
+target_agent: academic-agent | campus-info-agent | life-agent
+task_scope: lab_report | coursework | paper | study_index | teacher_deep | college_panorama | lab_research | admission | dining | living | activity | calendar
+task: "{用户原始需求原文，禁止改写、禁止注入推断内容}"
+
+# 可选：上游产物路径（无则省略）
+upstream_artifacts:
+  - "{上游产物路径，无则省略整个字段}"
+
+# 必填：读取边界
+allowed_read_paths:
+  - "workspace/{session_id}/**"
+  - "skills/**"
+forbidden_read_paths:
+  - "workspace/{other_session_id}/**"
+  - "openclaw/agents/**"
+
+# 必填：写入边界
+allowed_write_paths:
+  - "workspace/{session_id}/academic/**"
+  - "workspace/{session_id}/campus-info/**"
+  - "workspace/{session_id}/life/**"
+  - "workspace/{session_id}/outputs/**"
+forbidden_write_paths:
+  - "openclaw/**"
+  - "skills/**"
+  - "workspace/{other_session_id}/**"
+
+# 可选但推荐：期望产物
+expected_artifacts:
+  - path_hint: "workspace/{session_id}/{domain}/..."
+    type: report | ppt | handbook | markdown | docx | pdf | html | data | summary
+    purpose: "{产物用途}"
+
+# 必填：验收标准，供子 Agent 自检与主 Agent 验收
+done_criteria:
+  - "{可验证完成标准 1}"
+  - "{可验证完成标准 2}"
+
+# 可选：特殊约束
+constraints:
+  academic_integrity: "不得代写、不得编造数据；必要时标注 AI 辅助"
+  source_required: "涉及校园事实时必须给来源或待确认说明"
+  privacy: "不得输出私人信息或敏感推断"
+
+# 必填：要求子 Agent 返回统一结果单
+return_contract: AgentResult.yaml
