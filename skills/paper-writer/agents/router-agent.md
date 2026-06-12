@@ -25,9 +25,10 @@
 ### Step 3: 选取工具 Skills
 
 根据具体任务需求判断：
-- 需要图表？→ 加入 visualization 相关 skills
+- 需要结构图、网络拓扑图、流程图或架构图？→ 加入 `paper-writer/skills/markdown-mermaid-writing/SKILL.md`
+- 需要图表/数据可视化？→ 加入 visualization 相关 skills
 - 需要数据分析？→ 加入 data 相关 skills
-- 导出 DOCX → 加入 `paper-writer/skills/docx/SKILL.md`
+- 导出 DOCX → 加入 `paper-writer/skills/docx/SKILL.md`；若正文可能包含 Mermaid，也同时加入 `paper-writer/skills/markdown-mermaid-writing/SKILL.md`
 - 其他按需选取
 
 ### Step 4: 组装最终列表

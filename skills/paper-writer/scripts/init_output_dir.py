@@ -13,7 +13,7 @@ def init_output_dir(name: str, target_words: int = 1500,
                     lang: str = "English", author: str = "") -> Path:
     """Create output directory structure for a paper."""
     base = Path("paper-writer/outputs") / name
-    dirs = ["00_admin", "01_sources", "02_outline", "04_final",
+    dirs = ["00_admin", "01_sources", "02_outline", "03_figures", "04_final",
             "05_exports", "06_qa"]
     for d in dirs:
         (base / d).mkdir(parents=True, exist_ok=True)
@@ -29,9 +29,12 @@ def init_output_dir(name: str, target_words: int = 1500,
             "sources": str(base / "01_sources"),
             "outline": str(base / "02_outline" / "outline.md"),
             "citations": str(base / "00_admin" / "citations.json"),
+            "figures": str(base / "03_figures"),
             "final_paper": str(base / "04_final" / "final_paper.md"),
+            "rendered_paper": str(base / "04_final" / "final_paper.rendered.md"),
             "exports": str(base / "05_exports"),
             "docx": str(base / "05_exports" / "final_paper.docx"),
+            "mermaid_manifest": str(base / "03_figures" / "mermaid_manifest.json"),
             "check_report": str(base / "06_qa" / "check_report.json"),
         },
     }

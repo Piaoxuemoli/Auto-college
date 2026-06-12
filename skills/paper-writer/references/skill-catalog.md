@@ -302,7 +302,7 @@ Select based on specific task requirements, not paper topic.
 ### Visualization & Figures
 **Trigger (zh):** 需要图表、示意图、海报、幻灯片、数据可视化
 **Trigger (en):** need charts, figures, diagrams, schematics, posters, slides
-**Count:** 12
+**Count:** 13
 
 | Skill | Description | Path |
 |-------|-------------|------|
@@ -310,6 +310,7 @@ Select based on specific task requirements, not paper topic.
 | generate-image | Generate or edit images using AI models (FLUX, Nano Banana 2). Use for general-purpose image generation including photos, illustrations, artwork, visu | `skills/generate-image/SKILL.md` |
 | infographics | "Create professional infographics using Nano Banana Pro AI with smart iterative refinement. Uses Gemini 3 Pro for quality review. Integrates research- | `skills/infographics/SKILL.md` |
 | latex-posters | "Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter. Support for conference presentations, academic posters, an | `skills/latex-posters/SKILL.md` |
+| markdown-mermaid-writing | Comprehensive markdown and Mermaid diagram writing skill. Use when creating any scientific document, report, analysis, or visualization. Establishes t | `skills/markdown-mermaid-writing/SKILL.md` |
 | matplotlib | Low-level plotting library for full customization. Use when you need fine-grained control over every plot element, creating novel plot types, or integ | `skills/matplotlib/SKILL.md` |
 | pptx-posters | Create research posters using HTML/CSS that can be exported to PDF or PPTX. Use this skill ONLY when the user explicitly requests PowerPoint/PPTX post | `skills/pptx-posters/SKILL.md` |
 | scientific-schematics | Create publication-quality scientific diagrams using Nano Banana 2 AI with smart iterative refinement. Uses Gemini 3.1 Pro Preview for quality review. | `skills/scientific-schematics/SKILL.md` |

@@ -77,6 +77,8 @@
 
 ### Step 5: 生成图表（如有需要）
 
+结构图、网络拓扑图、流程图、系统架构图优先使用 Mermaid 写入 `final_paper.md`，不要使用 ASCII 艺术图。Mermaid 代码块会在导出阶段通过 `paper-writer/scripts/render_mermaid.py` 渲染为 PNG，再插入 DOCX。
+
 如有 scientific-schematics、matplotlib 等 skill，按指引为论文生成图表。
 
 ### Step 6: 起 export-agent
@@ -102,7 +104,14 @@
 
 2. 如果检查发现问题，修复 final_paper.md 后重新检查
 
-3. 读取 paper-writer/skills/docx/SKILL.md，用 docx-js 方案导出 DOCX：
+3. 渲染 Mermaid 图表：
+   python paper-writer/scripts/render_mermaid.py \
+       --input "<output_dir>/04_final/final_paper.md" \
+       --output-dir "<output_dir>/03_figures" \
+       --processed-markdown "<output_dir>/04_final/final_paper.rendered.md" \
+       --manifest "<output_dir>/03_figures/mermaid_manifest.json"
+
+4. 读取 paper-writer/skills/docx/SKILL.md，用 docx-js 方案将 final_paper.rendered.md 导出 DOCX：
    - A4 页面，IEEE 单栏边距
    - 标题 SimHei 16pt 居中加粗
    - 作者/院系 SimSun 12pt 居中
@@ -111,9 +120,10 @@
    - 章节标题 SimHei 加粗
    - 参考文献 SimSun 10.5pt
    - 公式 Cambria Math 12pt 居中
-   - 页眉论文标题，页脚居中页码
+   - Mermaid 图表 PNG 用 ImageRun 插入，不能保留 ASCII 图或 Mermaid 代码块
+   - 不加页眉，页脚居中页码
 
-4. 验证 DOCX 有效性
+5. 验证 DOCX 有效性
 ```
 
 ## 重要原则

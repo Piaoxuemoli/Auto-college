@@ -37,9 +37,27 @@ python paper-writer/scripts/check_paper.py \
 - 缺少章节 → 补充缺失部分
 - 引用不匹配 → 修正引用编号或补充参考文献
 
-### Step 3: 导出 DOCX
+### Step 3: 渲染 Mermaid 图表
 
-读取 `paper-writer/skills/docx/SKILL.md`，使用 docx-js 方案将 Markdown 论文导出为 DOCX。
+在导出 DOCX 前，先把 `final_paper.md` 中的 Mermaid 代码块渲染为 PNG，并生成替换后的 Markdown：
+
+```bash
+python paper-writer/scripts/render_mermaid.py \
+    --input "<final_paper_path>" \
+    --output-dir "<output_dir>/03_figures" \
+    --processed-markdown "<output_dir>/04_final/final_paper.rendered.md" \
+    --manifest "<output_dir>/03_figures/mermaid_manifest.json"
+```
+
+要求：
+- Mermaid 源码仍保存在 `.mmd` 文件中，作为可维护的 source of truth
+- PNG 图片用于 Word 插图，避免在 DOCX 中出现 ASCII 拓扑图或代码块
+- 如果没有 Mermaid 代码块，脚本仍会生成 `final_paper.rendered.md`，内容与原文一致
+- 如果 mermaid.ink 网络请求失败，检查 manifest 后重试；不要退回到 ASCII 图
+
+### Step 4: 导出 DOCX
+
+读取 `paper-writer/skills/docx/SKILL.md`，使用 docx-js 方案将 `final_paper.rendered.md` 导出为 DOCX。
 
 **预处理 LaTeX 公式**
 
@@ -78,10 +96,12 @@ python paper-writer/scripts/check_paper.py \
 - `# 标题` → 只渲染为正文标题段落，不同时写入 page header
 - `---` 水平线 → 跳过不渲染（这些是 markdown 分隔符，不是论文中的实际水平线）
 - `**粗体行**`（标题后连续出现）→ 识别为作者/院系信息
+- `![...](../03_figures/*.png)` → 用 `ImageRun` 插入图片，不渲染为普通文本；为图片添加 altText
+- 原始 Mermaid 代码块不应出现在最终 DOCX 中
 
-### Step 4: 验证
+### Step 5: 验证
 
-确认 DOCX 文件已正确生成且可打开。
+确认 DOCX 文件已正确生成且可打开，并抽查 Mermaid 图表已作为图片插入。
 
 ## 重要原则
 

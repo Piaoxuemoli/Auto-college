@@ -99,8 +99,8 @@ UTILITIES = {
     'Visualization & Figures': {
         'trigger': '需要图表、示意图、海报、幻灯片、数据可视化',
         'trigger_en': 'need charts, figures, diagrams, schematics, posters, slides',
-        'skills': ['academic-plotting', 'generate-image', 'infographics', 'latex-posters', 'matplotlib',
-            'pptx-posters', 'scientific-schematics', 'scientific-slides', 'scientific-visualization',
+        'skills': ['academic-plotting', 'generate-image', 'infographics', 'latex-posters', 'markdown-mermaid-writing',
+            'matplotlib', 'pptx-posters', 'scientific-schematics', 'scientific-slides', 'scientific-visualization',
             'seaborn', 'umap-learn', 'presenting-conference-talks']
     },
     'Data & Statistics': {
