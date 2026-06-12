@@ -41,6 +41,19 @@
 
 > [!] 优先级高于一切推理。违反任何一条 = 执行失败。
 
+### 实验执行强制规则（最高优先级）
+
+> [!] 实验报告最常见的偷懒：不跑命令、伪造 run_log、凭空描述结果。以下规则为最优先红线。
+
+- HC-X1: 当实验材料包含可执行命令或步骤（即 `lab-report` SKILL 的 `standard-executable` 路径）时，**必须实际执行命令**。不得跳过 experiment-runner 子代理，不得用文字描述替代真实执行。
+- HC-X2: Never 虚构终端输出。`run_log.md` 必须包含：实际执行过的命令、真实的 stdout、真实的 stderr（如有）、真实的退出码。不得写"假设输出"、"预期结果"、"运行后应看到"等虚构内容。
+- HC-X3: 如果命令确实无法执行（缺少依赖、权限不足、环境不兼容等），必须：
+  - 如实记录阻塞原因和缺失项到 `run_log.md`
+  - 在 `AgentResult.risks` 中声明"部分命令未能执行"
+  - 不得伪造成功执行记录
+- HC-X4: 产物交付前进行自检：`run_log.md` 中的输出是否为真实终端内容（非描述性文字）、`screenshots/` 中文件是否来自实际截图工具、`evidence_map.md` 引用的文件是否真实存在。
+- HC-X5: 跳过实验执行、伪造实验结果 = 最严重违规，等同于学术不端。
+
 ### 学术诚信（HC-A）
 
 - HC-A1: Never 代写整篇论文或学术不端内容；可辅助润色、结构化、格式化、文献整理。
@@ -67,17 +80,34 @@
 
 | task_scope | Skill | 说明 |
 |:---|:---|:---|
-| lab_report | `lab-report` | 实验报告：材料摘要 → 报告生成 → 实验执行（如需）→ 最终交付 |
+| lab_report | `lab-report` | 实验报告：材料摘要 → 报告草稿 → **实验执行（强制）** → 填充最终报告 |
 | coursework | `coursework-helper` | 课程作业：任务分类 → PPT/小论文/演讲稿/混合 → 交付打包 |
 | paper | `paper-writer` | 学术论文：需求收集 → 路由匹配专业 Skill → 写作 → 导出 |
 | study_index | `study-index` | 复习资料：材料提取 → 知识组织 → 手册编译 → PDF 导出 |
 
+### lab_report 执行阶段（不可跳过）
+
+`lab-report` SKILL 的 `standard-executable` 路径包含 4 个阶段，**每个阶段都是强制的，不可跳过**：
+
+| 阶段 | 子代理 | 产物 | 可否跳过 |
+|:---|:---|:---|:---|
+| 1. 材料摘要 | `experiment-summarizer` | `procedure_summary.md`、`evidence_map.md` | 否 |
+| 2. 报告草稿 | `report-writer`（模板模式） | `report_draft.md` | 否 |
+| **3. 实验执行** | **`experiment-runner`** | **`run_log.md`（真实终端输出）、`screenshots/`、`raw_outputs/`** | **绝对不可** |
+| 4. 最终报告 | `report-writer`（填充模式） | `final_report.md`、DOCX/PDF | 否 |
+
+> **阶段 3（实验执行）是最关键阶段**。跳过此阶段 = 实验报告本质上是伪造的。即使命令失败，也必须如实记录，不得虚构成功输出。
+
 ### 执行纪律
 
 1. 先完整读取对应 Skill 的 `SKILL.md`，遵循其流程和验收标准，不跳阶段。
-2. Skill 内部有子代理时，按子代理流程执行，不绕过。
-3. 产物交付前做完整性校验：文件存在、内容非空、格式正确。
-4. 学术诚信标注不可省略。
+2. Skill 内部有子代理时，按子代理流程执行，不绕过。**尤其是 `experiment-runner`，绝对不可跳过。**
+3. `lab-report` 的 `standard-executable` 路径中，实验执行后必须自检：
+   - `run_log.md` 内容是否为真实终端输出（含命令、stderr/stdout、退出码），而非描述性文字。
+   - `screenshots/` 和 `raw_outputs/` 中文件是否真实存在且非空。
+   - 如自检发现虚构内容 → 不得提交，立即重新执行。
+4. 产物交付前做完整性校验：文件存在、内容非空、格式正确。
+5. 学术诚信标注不可省略。
 
 ---
 
