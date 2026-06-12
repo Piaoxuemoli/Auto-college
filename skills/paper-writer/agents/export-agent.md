@@ -55,9 +55,50 @@ python paper-writer/scripts/render_mermaid.py \
 - 如果没有 Mermaid 代码块，脚本仍会生成 `final_paper.rendered.md`，内容与原文一致
 - 如果 mermaid.ink 网络请求失败，检查 manifest 后重试；不要退回到 ASCII 图
 
-### Step 4: 导出 DOCX
+### Step 4: 渲染实验过程截图
 
-读取 `paper-writer/skills/docx/SKILL.md`，使用 docx-js 方案将 `final_paper.rendered.md` 导出为 DOCX。
+把 `final_paper.rendered.md` 中的实验截图占位符渲染为 SVG，并生成最终用于 DOCX 的 Markdown：
+
+```bash
+python paper-writer/scripts/render_experiment_screenshots.py \
+    --input "<output_dir>/04_final/final_paper.rendered.md" \
+    --output-dir "<output_dir>/03_figures" \
+    --processed-markdown "<output_dir>/04_final/final_paper.assets.md" \
+    --manifest "<output_dir>/03_figures/experiment_screenshot_manifest.json"
+```
+
+支持两种占位符：
+
+```markdown
+<!-- experiment-screenshot:
+title: PPPoE 服务器配置过程
+style: terminal
+content:
+$ sudo pppoe-server -I eth0 -L 10.1.1.1 -R 10.1.1.100
+✓ PPPoE service started
+-->
+```
+
+````markdown
+```experiment-screenshot
+title: RADIUS 认证测试过程
+style: web
+content:
+1. 客户端发起 PPPoE 拨号
+2. PPPoE 服务器向 RADIUS 发起 Access-Request
+3. RADIUS 返回 Access-Accept
+```
+````
+
+要求：
+- 命令、IP、配置项必须写成文本，由脚本确定性渲染；不要用 AI 图片模型重画文字密集型截图
+- 可用样式：`terminal`、`web`、`config`、`checklist`
+- 生成的 SVG 图片用于 Word 插图；原始占位符不应出现在最终 DOCX 中
+- 如果没有实验截图占位符，脚本仍会生成 `final_paper.assets.md`，内容与 `final_paper.rendered.md` 一致
+
+### Step 5: 导出 DOCX
+
+读取 `paper-writer/skills/docx/SKILL.md`，使用 docx-js 方案将 `final_paper.assets.md` 导出为 DOCX。
 
 **预处理 LaTeX 公式**
 
@@ -96,12 +137,12 @@ python paper-writer/scripts/render_mermaid.py \
 - `# 标题` → 只渲染为正文标题段落，不同时写入 page header
 - `---` 水平线 → 跳过不渲染（这些是 markdown 分隔符，不是论文中的实际水平线）
 - `**粗体行**`（标题后连续出现）→ 识别为作者/院系信息
-- `![...](../03_figures/*.png)` → 用 `ImageRun` 插入图片，不渲染为普通文本；为图片添加 altText
-- 原始 Mermaid 代码块不应出现在最终 DOCX 中
+- `![...](../03_figures/*.png)` / `![...](../03_figures/*.svg)` → 用 `ImageRun` 插入图片，不渲染为普通文本；根据扩展名设置 `type`，并为图片添加 altText
+- 原始 Mermaid 代码块和实验截图占位符不应出现在最终 DOCX 中
 
-### Step 5: 验证
+### Step 6: 验证
 
-确认 DOCX 文件已正确生成且可打开，并抽查 Mermaid 图表已作为图片插入。
+确认 DOCX 文件已正确生成且可打开，并抽查 Mermaid 图表和实验过程截图已作为图片插入。
 
 ## 重要原则
 

@@ -56,7 +56,7 @@ router-agent 会：
 writer-agent 会：
 1. 按列表加载 skills
 2. 文献检索 → 大纲 → 撰写论文
-3. 起 export-agent（检查 + Mermaid 渲染 + DOCX 导出）
+3. 起 export-agent（检查 + Mermaid 渲染 + 实验截图渲染 + DOCX 导出）
 
 ```
 起 router-agent，传入以下信息：
@@ -102,7 +102,7 @@ paper-writer/outputs/<paper_name>/
               │  加载 skills → 文献检索 → 大纲 → 撰写 → 引用
               │
               └─→ export-agent（导出员）
-                    check_paper.py → 修复 → render_mermaid.py → docx skill 导出 DOCX
+                    check_paper.py → 修复 → render_mermaid.py → render_experiment_screenshots.py → docx skill 导出 DOCX
 ```
 
 ## 重要原则

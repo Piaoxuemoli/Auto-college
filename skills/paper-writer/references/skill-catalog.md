@@ -300,8 +300,8 @@ A paper may match multiple domains (e.g. "deep learning for protein structure" m
 Select based on specific task requirements, not paper topic.
 
 ### Visualization & Figures
-**Trigger (zh):** 需要图表、示意图、海报、幻灯片、数据可视化
-**Trigger (en):** need charts, figures, diagrams, schematics, posters, slides
+**Trigger (zh):** 需要图表、示意图、实验截图、海报、幻灯片、数据可视化
+**Trigger (en):** need charts, figures, diagrams, experiment screenshots, schematics, posters, slides
 **Count:** 13
 
 | Skill | Description | Path |

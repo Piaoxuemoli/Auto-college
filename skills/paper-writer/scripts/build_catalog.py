@@ -97,8 +97,8 @@ DOMAINS = {
 
 UTILITIES = {
     'Visualization & Figures': {
-        'trigger': '需要图表、示意图、海报、幻灯片、数据可视化',
-        'trigger_en': 'need charts, figures, diagrams, schematics, posters, slides',
+        'trigger': '需要图表、示意图、实验截图、海报、幻灯片、数据可视化',
+        'trigger_en': 'need charts, figures, diagrams, experiment screenshots, schematics, posters, slides',
         'skills': ['academic-plotting', 'generate-image', 'infographics', 'latex-posters', 'markdown-mermaid-writing',
             'matplotlib', 'pptx-posters', 'scientific-schematics', 'scientific-slides', 'scientific-visualization',
             'seaborn', 'umap-learn', 'presenting-conference-talks']
