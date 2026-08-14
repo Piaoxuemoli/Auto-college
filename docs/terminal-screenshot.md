@@ -1,94 +1,83 @@
 # terminal-screenshot
 
-将终端命令输出渲染为逼真的 PNG 截图。支持 PowerShell、macOS zsh、Linux/SSH 等高保真模板，自动配置渲染工具，并按时间分区保存输出。
+将终端命令输出渲染为逼真 PNG 截图。核心原则：**让真实终端引擎处理着色与排版**，
+采用三档渲染架构（freeze 真实执行 → termframe 真模拟器渲染 ANSI → HTML 模板回退）。
 
-Render terminal command output as realistic PNG screenshots. High-fidelity templates for
-PowerShell, macOS zsh, Linux/SSH, auto-configuring rendering tools, and time-partitioned
-outputs.
+Render terminal command output as realistic PNG screenshots via a three-tier
+pipeline: real execution through [freeze](https://github.com/charmbracelet/freeze),
+real-terminal-engine rendering of forged content through
+[termframe](https://github.com/pambirus/termframe), and an HTML template fallback.
 
 ## 快速示例 / Quick Example
 
 ```bash
-python terminal-screenshot/scripts/html_to_png.py example.html --name git-fetch-powershell
+# Tier 1：真实执行本地命令（逼真度最高）
+python terminal-screenshot/scripts/render.py --execute "git log --oneline -5" --name git-log
+
+# Tier 2：伪造内容（如 GPU 服务器会话）—— 先写 session spec JSON
+python terminal-screenshot/scripts/render.py --spec session.json --name gpu-ssh
+
+# Tier 3：HTML 回退（freeze/termframe 不可用时）
+python terminal-screenshot/scripts/render.py --html page.html --name legacy-shot
 ```
+
+Tier 2 的 session spec 格式：
+
+```json
+{
+  "preset": "ssh", "user": "ubuntu", "host": "gpu-a100-01", "path": "~/train",
+  "commands": [
+    {"cmd": "nvidia-smi", "output": ["+---------------------+", "|  ...  |"]}
+  ]
+}
+```
+
+preset 支持：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 
 ![terminal-screenshot example](../skills/terminal-screenshot/example.png)
 
-> Windows Terminal PowerShell 7 风格，通过 Playwright 生成。内容：`git fetch` 终端会话模拟。
->
-> Windows Terminal PowerShell 7 style, generated via Playwright. Content: a simulated
-> `git fetch` terminal session.
+> Windows Terminal PowerShell 7 风格（HTML 回退管线，Playwright 生成）。
+> Windows Terminal PowerShell 7 style via the HTML fallback pipeline.
 
-## 支持的终端类型 / Supported Terminal Types
+## 三档渲染架构 / Three Tiers
 
-| 类型 / Type | 风格 / Style | 效果 / Effects |
-|-------------|-------------|----------------|
-| 绿色荧光 CRT | 黑 + 绿 `#33FF33` | 扫描线、发光、暗角 |
-| 琥珀色荧光 CRT | 黑 + 琥珀 `#FFB000` | 扫描线、发光、暗角 |
-| Windows Terminal PowerShell 7 | `#0C0C0C` + PowerShell token colors | 标签栏、窗口按钮 |
-| macOS Terminal zsh | `#1D1F21` + zsh prompt colors | 红绿灯按钮 |
-| Linux/SSH server | `#0B1020` + SSH prompt colors | 远程会话或无边框片段 |
-| 现代暗色 (GNOME) | `#1E1E1E` + `#D4D4D4` | 简洁 |
-| xterm 亮色 | 白 + 黑 | 简洁 |
+| 档 | 工具 | 适用 | 逼真度来源 |
+|----|------|------|-----------|
+| Tier 1 | [freeze](https://github.com/charmbracelet/freeze) `--execute` | 本机可真实执行的命令 | 真实执行 + ANSI 捕获，字体度量/着色物理级真实 |
+| Tier 2 | [termframe](https://github.com/pambirus/termframe) + `ansi_builder.py` | 伪造内容（GPU 服务器、SSH 远程等） | 真终端模拟器引擎渲染 truecolor ANSI，内置 iTerm2 主题与窗口样式 |
+| Tier 3 | `html_to_png.py` HTML 模板 | 外部工具不可用 | 高保真模板 + freeze/codeshot 风格视觉（外圈背景/圆角/阴影） |
 
-> | Type | Style | Effects |
-> |------|-------|---------|
-> | Green Phosphor CRT | Black + Green `#33FF33` | Scanlines, glow, vignette |
-> | Amber Phosphor CRT | Black + Amber `#FFB000` | Scanlines, glow, vignette |
-> | Windows Terminal PowerShell 7 | `#0C0C0C` + PowerShell token colors | Tab bar, caption buttons |
-> | macOS Terminal zsh | `#1D1F21` + zsh prompt colors | Traffic light buttons |
-> | Linux/SSH server | `#0B1020` + SSH prompt colors | Remote session or borderless snippet |
-> | Modern Dark (GNOME) | `#1E1E1E` + `#D4D4D4` | Clean |
-> | xterm Light | White + Black | Clean |
+工具缺失时 render.py 自动尝试安装（brew / go / scoop / cargo），全部失败退出码 2，
+调用方跳过截图继续工作流。
 
-## 安装 / Installation
+## 支持的终端画像 / Session Profiles
 
-复制到 `~/.claude/skills/terminal-screenshot/`：
+| 类型 / Type | 提示符 / Prompt | 备注 |
+|-------------|----------------|------|
+| Windows PowerShell 7 | `PS C:\...>` | 标签栏、窗口按钮 |
+| Windows cmd | `C:\...>` | 单色简洁 |
+| macOS zsh | `user@host dir %` | 红绿灯按钮 |
+| Linux/SSH server | `user@host:path$` / `root#` | 实验报告默认；本地 chrome + 远程提示符 |
+| CRT 复古终端 | `$`（绿色/琥珀荧光） | 扫描线、发光、暗角（仅 HTML 档） |
 
-Copy to `~/.claude/skills/terminal-screenshot/`:
-
-```bash
-cp -r terminal-screenshot ~/.claude/skills/
-```
-
-## 渲染工具 / Rendering Tools
-
-脚本自动按以下优先级获取渲染工具：
-
-The script resolves rendering tools with this priority:
-
-1. **自动配置 / Auto-config** — 尝试 `pip install playwright` + `playwright install chromium`（最多重试 3 次）/ attempts to install Playwright (up to 3 retries)
-2. **降级 / Fallback** — 检测系统已有工具：Edge headless → Chrome headless → wkhtmltoimage / detects existing system tools
-3. **跳过 / Skip** — 全部不可用时跳过截图，不阻塞工作流 / skips screenshots gracefully if nothing works
-
-## 工作原理 / How It Works
-
-1. **识别会话画像** — 判断 PowerShell、macOS zsh、Linux/SSH、短片段或完整会话
-2. **选择高保真模板** — 来自 `references/terminal-types.md` 和 `references/html-templates.md`
-3. **构建 HTML** — 使用 `references/html-templates.md` 中的模板
-4. **转换为 PNG** — 通过 `scripts/html_to_png.py`，自动配置 → 质量检查 → 降级 → 跳过
-5. **整理输出** — 默认保存到 `terminal-screenshot/outputs/YYYY-MM-DD/HHMMSS-name/`
-
-> 1. **Detect session profile** — PowerShell, macOS zsh, Linux/SSH, snippet, or full session
-> 2. **Select high-fidelity template** — from `references/terminal-types.md` and `references/html-templates.md`
-> 3. **Build HTML** — using templates from `references/html-templates.md`
-> 4. **Convert to PNG** — via `scripts/html_to_png.py` with auto-config → quality checks → fallback → skip
-> 5. **Organize outputs** — defaults to `terminal-screenshot/outputs/YYYY-MM-DD/HHMMSS-name/`
+完整预设与检测规则见 `skills/terminal-screenshot/references/terminal-types.md`。
 
 ## 文件结构 / File Structure
 
 ```
 terminal-screenshot/
-├── README.md
 ├── SKILL.md                    # Skill 指令 / Skill instructions
 ├── example.png                 # 样例输出 / Sample output
-├── outputs/                    # 生成物目录（git 忽略，仅保留 .gitkeep）/ generated outputs (gitignored)
+├── outputs/                    # 生成物（git 忽略）/ generated outputs (gitignored)
+├── configs/
+│   └── freeze-base.json        # Tier 1 freeze 视觉配置 / freeze visual config
 ├── references/
-│   ├── terminal-types.md       # 色板与检测规则 / Color palettes & detection rules
-│   └── html-templates.md       # HTML/CSS 模板 / HTML/CSS templates
-├── scripts/
-│   └── html_to_png.py          # HTML→PNG 转换器 / converter with auto-config + fallback
-└── assets/                     # 预留 / reserved
+│   ├── terminal-types.md       # 色板与检测规则 / palettes & detection rules
+│   └── html-templates.md       # HTML/CSS 模板（含 freeze 风格舞台样式）
+└── scripts/
+    ├── render.py               # 统一渲染入口 / unified three-tier entry
+    ├── ansi_builder.py         # session spec → ANSI 转义序列 / spec → ANSI
+    └── html_to_png.py          # Tier 3 HTML→PNG 回退管线 / fallback pipeline
 ```
 
 ## 许可证 / License

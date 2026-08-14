@@ -1,8 +1,12 @@
 # Auto-college
 
-一套 Claude Code / Cursor Skills，让 AI 帮你搞定大学课程作业——实验报告、水课 PPT、小论文、读书报告、课堂展示稿、终端截图、开卷考试资料整理，从材料到成品一步到位。
+聚焦大学课程场景的 Claude Code / Cursor Skills：**逼真终端截图**（核心）+
+**实验报告** 流程。终端截图采用三档渲染架构，让真实终端引擎（[freeze](https://github.com/charmbracelet/freeze)、
+[termframe](https://github.com/pambirus/termframe)）处理着色与排版，逼真度物理级。
 
-A collection of Claude Code / Cursor Skills that automate college coursework — lab reports, lecture slides, short papers, reading reports, presentation scripts, terminal screenshots, and open-book exam preparation — from raw materials to polished deliverables in one step.
+Claude Code / Cursor skills focused on college coursework: **realistic terminal
+screenshots** (core, three-tier rendering powered by real terminal engines) plus a
+streamlined **lab report** workflow.
 
 ---
 
@@ -16,11 +20,9 @@ A collection of Claude Code / Cursor Skills that automate college coursework —
 curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/setup.js | node
 ```
 
-脚本会自动完成：检测平台（Claude Code / Cursor）→ clone 仓库 → 复制 5 个 skills → 清理临时文件。
+脚本会自动完成：检测平台（Claude Code / Cursor）→ clone 仓库 → 复制 skills → 清理临时文件。
 
 ### 方式二：让 Agent 帮你装
-
-对你的 AI Agent 说：
 
 ```text
 帮我从 https://github.com/Piaoxuemoli/Auto-college 安装 skills 到当前项目
@@ -28,73 +30,47 @@ curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/set
 
 ### 安装后使用
 
-重启 Agent，直接描述任务即可，Agent 会自动匹配对应 skill：
-
-```text
-帮我根据实验手册生成实验报告
-```
-
-```text
-帮我写一篇关于分布式计算的1500字小论文，IEEE格式
-```
+重启 Agent，直接描述任务即可：
 
 ```text
 把这段 PowerShell 输出渲染成终端截图
 ```
 
 ```text
-帮我整理这些 PPT 和文档，做成开卷考试速查手册
-```
-
-也可以明确指定 skill：
-
-```text
-使用 terminal-screenshot skill，把这段终端输出做成 PNG
+根据实验手册生成实验报告，运行证据用终端截图
 ```
 
 ---
 
 ## Skills
 
-### [lab-report](docs/lab-report.md)
+### [terminal-screenshot](docs/terminal-screenshot.md)（核心）
 
-实验报告全流程自动化：个人信息本地复用、材料目录一键导入、自动模式、课程模板记忆、证据映射。内置标准大学实验报告模板（10 节结构），导出 DOCX 自动应用学术排版。
+终端命令输出 → 逼真 PNG 截图，三档渲染架构：
 
-Automate lab reports with reusable profile data, material-folder intake, auto mode, course template memory, and evidence maps. Standard university format (10-section) with academic styling on DOCX export.
+1. **Tier 1 — freeze 真实执行**：本机可执行的命令用
+   [freeze](https://github.com/charmbracelet/freeze) 真实运行并捕获 ANSI 输出，字体/着色/间距物理级真实。
+2. **Tier 2 — ANSI + termframe**：伪造内容（GPU 服务器、SSH 远程等）生成为 ANSI 转义序列，
+   交给真实终端模拟器 [termframe](https://github.com/pambirus/termframe) 渲染（内置 iTerm2 主题与窗口样式）。
+3. **Tier 3 — HTML 回退**：无外部工具时用高保真 HTML 模板 + 无头浏览器截图，
+   模板吸收 freeze/codeshot 视觉体系（外圈背景、圆角、阴影）。
 
----
-
-### [paper-writer](docs/paper-writer.md)
-
-学术论文路由器：不自己实现具体能力，而是按需从 **233 个专业 skills** 中加载所需能力，调度子代理执行，最后负责格式检查和 DOCX 导出。主 agent 只做路由，子代理自发现 skills 并全权执行。
-
-Academic paper router: loads from 233 professional skills on demand, dispatches sub-agents, handles format checking and DOCX export. Router architecture keeps the main agent context clean.
-
----
-
-### [terminal-screenshot](docs/terminal-screenshot.md)
-
-终端命令输出渲染为逼真 PNG 截图。支持 PowerShell、macOS zsh、Linux/SSH 高保真模板。自动配置渲染工具（Playwright → Edge/Chrome headless → 降级跳过）。
-
-Render terminal command outputs as realistic PNG screenshots. High-fidelity templates for PowerShell, macOS zsh, and Linux/SSH with auto-configuring rendering tools.
+Render terminal outputs as realistic PNGs via a three-tier pipeline: real
+execution through freeze, real-terminal-engine rendering through termframe for
+forged content, and an HTML template fallback.
 
 ![terminal-screenshot 示例 / Example](skills/terminal-screenshot/example.png)
 
 ---
 
-### [coursework-helper](docs/coursework-helper.md)
+### [lab-report](docs/lab-report.md)
 
-通识课 / 选修课作业一键生成：PPT（15 个模板 + 主题系统 + Slidev 可选）、小论文、读书报告、观后感、演讲稿。内置 PPT 引擎，Markdown slide card 直接导出带 speaker notes 的 PPTX。视频链接默认 Bilibili 等国内平台。
+实验报告精简流程：本地学生信息复用 → 材料分类（可执行/已有数据/纯理论）→
+执行实验并用 terminal-screenshot 生成运行证据 → 十段式模板成稿 → DOCX 导出。
 
-Generate deliverables for general education coursework: slides (15 templates + theme system + optional Slidev), short papers, reading reports, reflection essays, and speech scripts. Built-in PPT engine exports styled PPTX with speaker notes from structured Markdown.
-
----
-
-### [study-index](docs/study-index.md)
-
-将散乱的课程材料（PPT、PDF、文档、笔记）整理成一本带目录、带索引、带关键图片的速查手册。核心原则：不丢失信息——源材料中的全部文字内容完整保留，关键图片自动筛选并放到手册对应位置。脚本拼接全部文本，AI 只负责生成大纲。
-
-Organize scattered course materials into an indexed study handbook. Core principle: no information loss — all text preserved in full, key images auto-filtered and placed correctly. Scripts compile all text; AI only writes the outline.
+A streamlined lab-report workflow: reusable profile → material classification →
+execute the experiment with terminal-screenshot evidence → ten-section template →
+DOCX export.
 
 ---
 
