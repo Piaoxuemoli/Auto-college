@@ -16,3 +16,5 @@ skills/*/outputs/*
 
 # Temporary clone directory for external repos
 rf/
+.mimosa/
+.zcode/
