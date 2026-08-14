@@ -9,197 +9,50 @@ description: >
   benefit from terminal evidence — suggest capturing the output as a screenshot.
 ---
 
-# Terminal Screenshot Simulator
+# Terminal Screenshot — 三档渲染架构
 
-Render terminal command output as realistic PNG screenshots. Prefer a session-profile
-approach: identify the operating system, shell, host context, and prompt grammar first,
-then choose a visual preset. This avoids the common failure mode where every screenshot
-looks like the same generic dark terminal with different text pasted into it.
+把终端命令输出渲染成逼真 PNG。核心原则：**让真实终端引擎处理着色与排版**，
+手写 HTML span 颜色只作最后回退。
 
-## Workflow
+## 决策表
 
-```
-User provides command + output (or asks to run a command)
-  → Step 1: Determine session profile (OS + shell + local/remote host)
-  → Step 2: Select the matching high-fidelity preset from references/terminal-types.md
-  → Step 3: Build HTML using the matching template from references/html-templates.md
-  → Step 4: Convert HTML to PNG using scripts/html_to_png.py
-  → Step 5: Deliver the PNG, optionally keep the HTML
-```
+| 内容性质 | 渲染档 | 命令 |
+|---|---|---|
+| 命令可在本机真实执行（git log、python xx.py 等本地操作） | **Tier 1** freeze 真实执行 | `python scripts/render.py --execute "<cmd>" --name <slug>` |
+| 伪造内容（GPU 服务器、SSH 远程、不存在的结果） | **Tier 2** ANSI + termframe 真模拟器 | 先写 session spec JSON，`python scripts/render.py --spec spec.json --name <slug>` |
+| freeze/termframe 均不可用 | **Tier 3** HTML → 无头浏览器 | 按 `references/html-templates.md` 写 HTML，`python scripts/render.py --html page.html --name <slug>` |
 
-## Step 1: Determine Session Profile
+会话画像（Tier 2/3 用）：`PS C:\...>` → powershell 预设；`C:\...>` → cmd；
+`%` 结尾提示符/brew → macOS zsh；`user@host:path$`/nvidia-smi/systemctl → SSH
+（实验报告默认）；复古/游戏场景 → CRT。完整预设目录见 `references/terminal-types.md`。
 
-Read `references/terminal-types.md` for the full catalog. First infer the session profile
-from the content and surrounding user request:
+## Tier 2 session spec 格式
 
-| Content Signal | Session Profile | Use Preset |
-|----------------|-----------------|------------|
-| `PS C:\...>`, `pwsh`, `Get-ChildItem`, `Set-ExecutionPolicy`, `winget`, Windows paths | Local Windows PowerShell 7 | **Windows Terminal PowerShell 7** |
-| `C:\...>`, `cmd.exe`, `dir`, `ipconfig`, `chkdsk` without `PS` | Windows Command Prompt | **Windows Terminal / cmd tab** |
-| `brew`, `xcodebuild`, `launchctl`, `pbcopy`, `~/Library`, prompt ending in `%` | Local macOS zsh | **macOS Terminal zsh** |
-| `ssh user@host`, prompt like `user@host:~/path$`, `sudo`, `systemctl`, `apt`, `journalctl`, GPU/server tools | Remote Linux server | **SSH Server Session** |
-| `nvidia-smi`, `nvcc`, `nvprof`, `cuda`, `torchrun`, `deepspeed` | GPU server | **SSH Server Session** unless user says it is local |
-| `gcc`, `make`, `gdb`, `vim`, `objdump` | Developer shell | **SSH Server Session** for Linux/server context, **macOS zsh** for macOS context |
-| Retro/game/hacking context | Stylized retro terminal | **Green or Amber Phosphor CRT** |
-| User explicitly requests a style | Use that style directly | User intent overrides all heuristics |
-
-If uncertain, inspect the prompt text before choosing. `PS` means PowerShell, `%` usually
-means zsh on macOS, `$`/`#` after `user@host:path` usually means Linux. If still uncertain,
-default to **SSH Server Session** for experiment reports and technical docs, because most
-terminal evidence in reports is remote Linux output rather than a local desktop terminal.
-
-Do not make a "server" screenshot by inventing a separate server-looking GUI. Real server
-work is normally shown through a local terminal window connected over SSH. The realistic
-choice is therefore: local terminal chrome + remote Linux prompt.
-
-## Step 2: Select Color Scheme and Effects
-
-From `references/terminal-types.md`, obtain:
-- Foreground/background hex colors
-- ANSI 16-color palette (if applicable)
-- Window chrome style (macOS / Windows / CRT monitor)
-- Font stack and font size for that platform
-- Prompt grammar and token colors for that shell
-- CRT effects CSS classes only for retro presets
-
-**CRT effects are always enabled** for phosphor-based terminals (green, amber, white, red).
-Modern terminals use clean rendering without scanlines.
-
-**Frame policy: choose one of two categories before writing HTML.**
-
-1. **Full terminal session** — use window chrome. Choose this when the provided text includes
-   startup banners, multiple prompts, an SSH login transition, tab/title context, or the user
-   explicitly asks to simulate the whole terminal. PowerShell and macOS examples often belong
-   here when the title bar is part of the request.
-2. **Command evidence snippet** — do not use fake window chrome. Choose this for short command
-   output, pasted Linux/server command results, single prompts, CI snippets, or anything meant
-   to be embedded in a report. Use a clean terminal block instead.
-
-Linux/server screenshots need special restraint: a remote server normally has no visible
-desktop frame. If the text does not show the local SSH command or a full SSH session, render
-it as a borderless command evidence snippet with Linux prompt styling. Only use the SSH Server
-window frame when the screenshot intentionally includes the local terminal connected to SSH.
-
-For remote SSH, choose the chrome from the user's local environment if known. On Windows, use
-a Windows Terminal tab named after the remote host. On macOS, use Terminal.app with a title
-like `user@host — ssh — 100x30`.
-
-## Step 3: Build HTML
-
-Use the templates in `references/html-templates.md` as the base. Prefer the high-fidelity
-presets near the top of that file:
-
-1. **Template P1: Windows Terminal PowerShell 7**
-2. **Template M1: macOS Terminal zsh**
-3. **Template S1: Remote Linux SSH Server**
-
-The older generic templates remain available for fallbacks, CRT styling, or user-requested
-looks.
-
-Key rules:
-- **Every template includes `overflow: hidden` on html/body** — no scrollbars appear
-- Terminal window width should match the preset: PowerShell and server screenshots often
-  look more real at 900-980px; macOS Terminal often looks best around 820-900px.
-- Set `<body>` background to `#2a2a2a` so the terminal window stands out
-- Wrap content in the appropriate window chrome div structure
-- Use `<span>` with CSS classes (`.prompt`, `.cmd`, `.output`, `.stderr`) to color parts
-- For multi-command sessions, separate each command block with a blank line
-- Use platform fonts from the preset rather than a single universal stack
-- Add a subtle block cursor (`<span class="cursor"></span>`) at the final prompt when the
-  screenshot represents an interactive session
-- For category 2 snippets, use the shell-specific body styling but omit the titlebar/tab
-  controls entirely.
-
-**Prompt and command formatting is more important than decorative chrome.** Match the shell:
-
-```html
-<!-- PowerShell -->
-<span class="prompt">PS C:\Users\qoobee\Desktop\Qoobee-skills&gt;</span> <span class="ps-command">Get-ChildItem</span> <span class="ps-param">-Force</span>
-
-<!-- macOS zsh -->
-<span class="prompt">qoobee@MacBook-Pro Qoobee-skills %</span> <span class="cmd">brew install node</span>
-
-<!-- Linux SSH -->
-<span class="prompt"><span class="user">ubuntu</span>@<span class="host">gpu-a100-01</span>:<span class="path">~/train</span>$</span> <span class="cmd">nvidia-smi</span>
+```json
+{
+  "preset": "ssh", "user": "ubuntu", "host": "gpu-a100-01", "path": "~/train",
+  "commands": [
+    {"cmd": "nvidia-smi", "output": ["+-----------------------------------------------------------------------------+", "|  ...表格行...  |"]}
+  ]
+}
 ```
 
-## Step 3.5: Run Quality Checks
+preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
+提示符配色由 `scripts/ansi_builder.py` 按预设自动生成（truecolor 转义序列）。
 
-Before converting to PNG, run the built-in checks in `scripts/html_to_png.py`. The renderer
-prints `[quality-check]` warnings when the generated HTML looks visually suspect. Treat those
-warnings as instructions to revise the HTML before accepting the screenshot.
+## 逼真度要点
 
-Checks currently cover:
-- **Chrome alignment:** Windows Terminal tab controls (`+` and dropdown) must be vertically
-  centered; the active tab can sit on the bottom edge, but adjacent controls must not sag.
-- **Frame policy:** very short content should not get a fake titlebar unless the input includes
-  terminal startup/title context or the user asked for a full terminal simulation.
-- **Linux/server restraint:** short Linux/server command output should be a clean snippet unless
-  the text includes an SSH transition or a full remote session.
-- **Prompt grammar:** PowerShell uses `PS ...>`, macOS zsh uses `%`, Linux SSH uses
-  `user@host:path$` or `root@host:path#`.
+- **Tier 1 物理真实**：freeze 真实执行并捕获 ANSI，字体度量/着色/间距无可挑剔，优先选它。
+- **Tier 2 引擎真实**：termframe 是真正的终端模拟器，ANSI 着色、光标由引擎渲染；
+  其 SVG 输出会自动用无头浏览器栅格化为 PNG（不可用时交付 SVG）。
+- **提示符语法必须精确**：PowerShell `PS ...>`、zsh `%`、Linux `user@host:path$` / `root#`。
+  SSH 场景用本地终端 chrome + 远程提示符，不要凭空造"服务器 GUI"。
+- **短输出克制**：短 Linux/服务器输出渲染为无边框证据片段，除非内容含 SSH 登录过程
+  或用户明确要完整终端窗口（Tier 3 质检会警告）。
+- **工具缺失不打断流程**：render.py 会尝试自动安装（brew/go/scoop/cargo），
+  全部失败退出码 2 —— 告知用户"本次跳过截图"并继续任务。
 
-## Step 4: Convert to PNG
+## 输出
 
-Run `scripts/html_to_png.py` with the HTML file path and normally omit the output PNG path.
-The script will create a time-partitioned output directory automatically:
-
-```text
-terminal-screenshot/
-  outputs/
-    YYYY-MM-DD/
-      HHMMSS-description/
-        description.html
-        description.png
-```
-
-Recommended call:
-
-```bash
-python scripts/html_to_png.py path/to/source.html --name short-description
-```
-
-Only pass an explicit `output.png` when the user asks for a specific path. Keeping HTML and
-PNG together in `outputs/` makes generated screenshots easy to find, compare, and delete.
-
-The script handles tool availability in three phases with clear priorities:
-
-### Phase A — Auto-Configuration (highest priority)
-
-The script attempts to install **Playwright** automatically via `pip install playwright`
-and `playwright install chromium`. This is the best quality tool and should always be
-preferred. If installation fails, it retries up to **3 times** before giving up.
-
-### Phase B — Fallback (lower priority)
-
-Only if auto-configuration fails after 3 attempts, the script falls back to detecting
-pre-installed tools on the system:
-
-1. **Puppeteer** (Chrome/Chromium) — `node -e "require('puppeteer')"`
-2. **Edge headless** (direct `msedge.exe --headless --screenshot`) — no npm required
-3. **Chrome headless** — `google-chrome` / `chromium`
-4. **wkhtmltoimage** — limited CSS support, last resort
-
-### Phase C — Skip
-
-If both auto-configuration AND all fallback tools fail, the script exits with code 2.
-**This is not an error** — it means screenshots are unavailable for this session.
-Simply tell the user "Screenshots are not available (no rendering tool found), continuing
-without them" and proceed — do not block the workflow.
-
-### Exit codes
-
-| Code | Meaning |
-|------|---------|
-| 0 | Screenshot generated successfully |
-| 1 | Input error (HTML not found, etc.) |
-| 2 | No tool available — skip screenshot and continue |
-
-## Step 5: Deliver
-
-- Always deliver the **PNG** as the primary output
-- Keep the HTML file alongside the PNG in the same time-partitioned output directory so the
-  user can tweak and re-render
-- Name files descriptively with `--name`, for example `--name git-fetch-powershell`
-- Report the output directory path, not just the PNG path
-- Clean up temporary/source HTML only if the user explicitly asks
+`outputs/YYYY-MM-DD/HHMMSS-<slug>/`，含 PNG 及对应源文件（.ansi/.svg/.html），
+交付时报目录路径。退出码：0 成功 / 1 输入错误 / 2 无工具可跳过。
