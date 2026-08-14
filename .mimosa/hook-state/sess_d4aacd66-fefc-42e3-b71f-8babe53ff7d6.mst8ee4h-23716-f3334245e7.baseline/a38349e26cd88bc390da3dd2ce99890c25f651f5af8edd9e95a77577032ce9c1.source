@@ -10,10 +10,10 @@
 
 const fs = require("fs");
 const path = require("path");
-const { execFileSync } = require("child_process");
+const { execSync } = require("child_process");
 
 const REPO_URL = "https://github.com/Piaoxuemoli/Auto-college.git";
-const SKILLS = ["lab-report", "terminal-screenshot"];
+const SKILLS = ["coursework-helper", "lab-report", "terminal-screenshot", "study-index", "paper-writer"];
 
 const cwd = process.cwd();
 
@@ -40,7 +40,7 @@ function main() {
   const tmpDir = path.join(cwd, ".auto-college-tmp");
   try {
     console.log("Cloning " + REPO_URL + " ...");
-    execFileSync("git", ["clone", "--depth", "1", REPO_URL, tmpDir], { stdio: "inherit" });
+    execSync('git clone --depth 1 "' + REPO_URL + '" "' + tmpDir + '"', { stdio: "inherit" });
 
     for (const skill of SKILLS) {
       const src = path.join(tmpDir, "skills", skill);
