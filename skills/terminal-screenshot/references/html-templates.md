@@ -686,3 +686,37 @@ Chrome quality checks before render:
 - `.tabs` should center neighboring controls and only bottom-align the active `.tab`.
 - `.new-tab` and `.chevron` should have an explicit height matching the tab control area.
 - If a screenshot has only one command and no startup/title context, remove the titlebar.
+
+---
+
+## Freeze-Style Stage (outer background / padding / radius / shadow)
+
+Borrowed from charmbracelet/freeze and codeshot.io: a realistic screenshot is a
+**windowed terminal floating on a stage**, never edge-to-edge. Wrap the terminal
+window in a stage container on every framed template (Tier 3):
+
+```css
+/* Stage: the "desktop wallpaper" backdrop behind the terminal window */
+.stage {
+    min-height: 100vh;
+    padding: 48px 56px;              /* breathing room around the window */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #1b1e2b 0%, #151721 100%);
+    /* solid alternative: background: #17181f; */
+}
+.window, .terminal {
+    border-radius: 10px;             /* modern terminals are rounded */
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;                /* clips children to the rounded corners */
+}
+```
+
+Rules:
+- The stage gradient must be subtle; it should read as a plain dark backdrop, not a poster.
+- Set `<body>` background to the stage color, keep `html, body { overflow: hidden }`.
+- Borderless evidence snippets (Template F) skip the stage and render edge-to-edge —
+  they are embedded in reports, not floated on a desktop.
+- Blinking cursor (framed interactive sessions only):
+  `@keyframes blink { 50% { opacity: 0 } } .cursor { animation: blink 1.2s step-end infinite; }`
