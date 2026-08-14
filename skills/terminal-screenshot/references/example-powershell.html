@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; overflow: hidden; }
+
+  /* Stage: procedural Windows 11 bloom-style wallpaper (see references/stage-backgrounds.md) */
+  .stage {
+    padding: 48px 56px;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(900px 600px at 68% 38%, rgba(120, 174, 255, 0.34), transparent 62%),
+        radial-gradient(700px 500px at 34% 66%, rgba(64, 132, 224, 0.30), transparent 60%),
+        radial-gradient(520px 380px at 52% 22%, rgba(171, 124, 255, 0.20), transparent 65%),
+        linear-gradient(152deg, #0e1626 0%, #101b30 46%, #0b1220 100%);
+  }
+
+  .window {
+    width: 940px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0C0C0C;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-family: "Cascadia Mono", "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #CCCCCC;
+  }
+
+  /* Windows Terminal chrome */
+  .titlebar {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background: #1F1F1F;
+    padding: 0 6px;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0C0C0C;
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 7px 7px 0 0;
+    margin-top: 6px;
+  }
+  .tab .ps-logo {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: conic-gradient(from 45deg, #5391FE, #384DAD);
+  }
+  .tab-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-left: 4px;
+    color: #999;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  .plus {
+    position: relative;
+    width: 12px;
+    height: 12px;
+  }
+  .plus::before, .plus::after {
+    content: "";
+    position: absolute;
+    background: #999;
+    left: 0;
+    top: 5px;
+    width: 12px;
+    height: 2px;
+  }
+  .plus::after {
+    transform: rotate(90deg);
+  }
+  .chevron {
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #999;
+    border-bottom: 2px solid #999;
+    transform: rotate(45deg) translateY(-2px);
+  }
+  .caption { margin-left: auto; display: flex; }
+  .caption-btn {
+    width: 46px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cap-min, .cap-max, .cap-close {
+    width: 10px;
+    height: 10px;
+    position: relative;
+  }
+  .cap-min::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #bbb;
+  }
+  .cap-max {
+    border: 1px solid #bbb;
+    border-radius: 1px;
+  }
+  .cap-close::before, .cap-close::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #bbb;
+  }
+  .cap-close::before { transform: rotate(45deg); }
+  .cap-close::after { transform: rotate(-45deg); }
+
+  .body { padding: 14px 18px 18px; white-space: pre; }
+  .prompt { color: #E5E510; }
+  .ps-command { color: #FFFFFC; }
+  .ps-param { color: #3B78FF; }
+  .output { color: #CCCCCC; }
+  .output-dim { color: #767676; }
+  .ok { color: #16C60C; }
+  .remote { color: #61D6D6; }
+  .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 17px;
+    background: #CCCCCC;
+    vertical-align: text-bottom;
+    animation: blink 1.2s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="window">
+    <div class="titlebar">
+      <div class="tab"><span class="ps-logo"></span> PowerShell</div>
+      <div class="tab-action"><span class="plus"></span></div>
+      <div class="tab-action"><span class="chevron"></span></div>
+      <div class="caption">
+        <div class="caption-btn"><span class="cap-min"></span></div>
+        <div class="caption-btn"><span class="cap-max"></span></div>
+        <div class="caption-btn"><span class="cap-close"></span></div>
+      </div>
+    </div>
+    <div class="body"><span class="output-dim">PowerShell 7.4.6 on Windows 11 Pro 23H2</span>
+<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="ps-command">git</span> <span class="ps-param">fetch origin</span>
+<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="ps-command">git</span> <span class="ps-param">status</span>
+<span class="output">On branch master</span>
+<span class="output">Your branch is up to date with 'origin/master'.</span>
+<span class="output"></span>
+<span class="output">Changes not staged for commit:</span>
+<span class="output">  (use "git add &lt;file&gt;..." to update what will be committed)</span>
+<span class="output">  (use "git restore &lt;file&gt;..." to discard changes in working directory)</span>
+<span class="output">        <span class="ok">modified:   README.md</span></span>
+<span class="output">        <span class="ok">modified:   setup.js</span></span>
+<span class="output"></span>
+<span class="output">no changes added to commit (use "git add" and/or "git commit -a")</span>
+<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="ps-command">python</span> <span class="ps-param">skills\terminal-screenshot\scripts\render.py --execute "pytest -q" --name pytest-run</span>
+<span class="output">[tier1] freeze --execute (real command, real ANSI capture)</span>
+<span class="ok">12 passed in 3.42s</span>
+<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="cursor"></span></div>
+  </div>
+</div>
+</body>
+</html>

@@ -73,12 +73,28 @@ terminal-screenshot/
 │   └── freeze-base.json        # Tier 1 freeze 视觉配置 / freeze visual config
 ├── references/
 │   ├── terminal-types.md       # 色板与检测规则 / palettes & detection rules
-│   └── html-templates.md       # HTML/CSS 模板（含 freeze 风格舞台样式）
+│   ├── html-templates.md       # HTML/CSS 模板（含 freeze 风格舞台样式）
+│   ├── stage-backgrounds.md    # 程序化壁纸舞台预设 / procedural wallpaper stages
+│   └── example-powershell.html # example.png 的可复现源文件 / reproducible source
 └── scripts/
     ├── render.py               # 统一渲染入口 / unified three-tier entry
     ├── ansi_builder.py         # session spec → ANSI 转义序列 / spec → ANSI
     └── html_to_png.py          # Tier 3 HTML→PNG 回退管线 / fallback pipeline
 ```
+
+## 真实背景 / Realistic Backdrops
+
+带窗口的截图悬浮在桌面壁纸上（不再是纯色背景）：程序化 CSS 壁纸预设
+`win11-bloom` / `win11-dark` / `macos-gradient` / `plain-dark` / `plain-light`，
+或 `custom` 直接引用真实壁纸图片。窗口阴影与圆角按 OS 匹配。详见
+`references/stage-backgrounds.md`。
+
+## 跨平台 / Cross-Platform
+
+- 工具安装链：freeze（brew/go/scoop）、termframe（brew/cargo/scoop）；
+  Windows 无官方源时提示手动安装，Tier 3 回退全平台可用。
+- HTML 模板使用平台专属字体栈（Cascadia Mono / SF Mono / JetBrains Mono + 中文回退）。
+- 脚本统一 pathlib 与 `file:///` URL，Windows/macOS/Linux 一致。
 
 ## 许可证 / License
 

@@ -47,10 +47,23 @@ preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
   其 SVG 输出会自动用无头浏览器栅格化为 PNG（不可用时交付 SVG）。
 - **提示符语法必须精确**：PowerShell `PS ...>`、zsh `%`、Linux `user@host:path$` / `root#`。
   SSH 场景用本地终端 chrome + 远程提示符，不要凭空造"服务器 GUI"。
-- **短输出克制**：短 Linux/服务器输出渲染为无边框证据片段，除非内容含 SSH 登录过程
-  或用户明确要完整终端窗口（Tier 3 质检会警告）。
+- **终端外的背景也要真实**：有窗口的截图必须悬浮在桌面壁纸上（见
+  `references/stage-backgrounds.md` 的程序化壁纸预设：win11-bloom / macos-gradient /
+  plain-dark / custom 真实图片），阴影与圆角匹配对应 OS；不要纯色贴边。
+- **短输出克制**：短 Linux/服务器输出渲染为无边框证据片段（无舞台），除非内容含
+  SSH 登录过程或用户明确要完整终端窗口（Tier 3 质检会警告）。
 - **工具缺失不打断流程**：render.py 会尝试自动安装（brew/go/scoop/cargo），
   全部失败退出码 2 —— 告知用户"本次跳过截图"并继续任务。
+
+## 跨平台
+
+- **工具安装**：freeze → brew / go install / scoop；termframe → brew / cargo / scoop。
+  无 Windows 官方安装源时提示用户手动安装，Tier 3 回退在所有平台可用
+  （Playwright → npx → Puppeteer → Edge/Chrome headless → wkhtmltoimage）。
+- **字体**：HTML 模板用平台专属字体栈（Windows: Cascadia Mono/Consolas + 微软雅黑
+  回退；macOS: SF Mono/Menlo + PingFang SC；Linux: JetBrains Mono/Ubuntu Mono + Noto Sans CJK），
+  保证中文输出在任何平台不错位。
+- **路径**：脚本内部统一 pathlib/`file:///` URL，Windows 反斜杠已处理。
 
 ## 输出
 

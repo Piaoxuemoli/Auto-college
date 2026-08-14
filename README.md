@@ -53,7 +53,10 @@ curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/set
 2. **Tier 2 — ANSI + termframe**：伪造内容（GPU 服务器、SSH 远程等）生成为 ANSI 转义序列，
    交给真实终端模拟器 [termframe](https://github.com/pambirus/termframe) 渲染（内置 iTerm2 主题与窗口样式）。
 3. **Tier 3 — HTML 回退**：无外部工具时用高保真 HTML 模板 + 无头浏览器截图，
-   模板吸收 freeze/codeshot 视觉体系（外圈背景、圆角、阴影）。
+   模板吸收 freeze/codeshot 视觉体系（外圈壁纸背景、圆角、阴影）。
+
+带窗口的截图悬浮在程序化桌面壁纸上（仿 Windows 11 / macOS 壁纸预设，或自定义真实壁纸），
+窗口阴影与圆角按 OS 匹配。全平台支持（Windows/macOS/Linux），工具缺失自动降级。
 
 Render terminal outputs as realistic PNGs via a three-tier pipeline: real
 execution through freeze, real-terminal-engine rendering through termframe for
