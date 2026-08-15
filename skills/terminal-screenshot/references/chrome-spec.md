@@ -25,15 +25,27 @@
 
 ## Windows Terminal 标签栏（官方实现：microsoft/terminal + WinUI TabView）
 
-| 元素 | 规格 |
-|------|------|
-| 标签高度 | **34px**（WinUI TabView 默认，含上下内边距） |
-| 标签图标 | 16×16px（profile 图标，如 PowerShell 徽标） |
-| 标签文字 | 12px Segoe UI，未激活标签文字 #999 系，激活标签 #FFF 系 |
-| 新建标签按钮 | Segoe Fluent Icons **E710**（Add），约 28×28 命中区，紧随最后一个标签 |
-| 下拉按钮 | Segoe Fluent Icons **E70D**（ChevronDown），约 28×28，紧随新建按钮 |
-| 激活标签 | 悬浮于标签条之上（底部贴合内容区），背景与终端内容区同色 |
-| Caption 按钮 | 同上表 Windows 11 规格（Terminal 标题栏即系统标题栏融合标签） |
+**金标准优先原则**：Windows Terminal 将标签并入标题栏，其高度跟随**系统 caption
+度量**（SM_CYSIZE + 边距）而非 WinUI 控件文档默认值，随 WT 版本/DPI/系统缩放
+设置变化。有实机金标准（`assets/golden/`）时一律以金标准实测为准；无金标准时
+用本表参考值。
+
+| 元素 | 规格（无金标准时参考） | 实测基准（本仓库金标准，WT 1.24 / Win11 / 200% DPI ÷2） |
+|------|------|------|
+| 标签条总高 | 34px（WinUI TabView 文档默认） | **40px** |
+| caption 按钮命中区 | 46×32（Win11 通用标题栏） | **46×40 全出血**，close 组右缘距窗口右缘 ~6.5px |
+| 标签 chip | — | **32px 高，底对齐标签条**（顶隙 8px），宽 ~240px |
+| 标签关闭 × | — | 标签内右侧有 16px 级 × 关闭钮 |
+| 标签图标 | 16×16px（profile 图标） | 同左（PowerShell 徽标 #012456 底 + 白 >_） |
+| 标签文字 | 12px Segoe UI，激活 #FFF / 未激活 #999 系 | 同左 |
+| 新建标签按钮 | Segoe Fluent Icons **E710**（Add），约 28×28 命中区，紧随最后一个标签 | 同左 |
+| 下拉按钮 | Segoe Fluent Icons **E70D**（ChevronDown），约 28×28，紧随新建按钮 | 同左 |
+| 激活标签 | 底边与内容区同色直通（无缝隙线） | 同左 |
+
+### macOS（金标准缺失时的待复核项）
+
+macOS 红绿灯圆心距顶缘 ~20px 在 28px 标题栏内偏下（非垂直居中）；k3 视觉复核
+认为真机观感接近垂直居中。**待 mac 金标准后复核此值**，复核前维持 ~20px。
 
 ## macOS 红绿灯（逆向工程 SVG，CC0，已存 assets/macos-traffic-lights/）
 

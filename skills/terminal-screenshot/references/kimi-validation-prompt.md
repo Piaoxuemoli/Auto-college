@@ -5,7 +5,7 @@
 ---
 
 你是终端截图伪造项目的视觉校验工程师。工作目录：
-`C:/Users/Qoobeewang/Desktop/Auto-college/skills/terminal-screenshot/`
+`C:/Users/AUTO_COLLEGE_ROOT/skills/terminal-screenshot/`
 
 ## 背景
 
