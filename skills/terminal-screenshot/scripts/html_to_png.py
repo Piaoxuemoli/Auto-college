@@ -77,8 +77,8 @@ def estimate_width(html_path):
             widths = [int(value) for value in re.findall(r'width:\s*(\d+)px', text)]
 
         content_width = max(widths) if widths else 740
-        # Most templates use 20-22px body padding on both sides plus a little clip margin.
-        return max(800, min(content_width + 96, 1600))
+        # Stage templates use 56px horizontal padding on both sides (48/56 stage + clip margin).
+        return max(800, min(content_width + 112, 1600))
     except Exception:
         return 800
 
@@ -402,12 +402,12 @@ def render_playwright_python(html_path, png_path, width):
 
     with sync_playwright() as p:
         try:
-            browser = p.chromium.launch(channel="msedge", headless=True)
+            browser = p.chromium.launch(channel="msedge", headless=True, args=["--disable-lcd-text"])
         except Exception:
             try:
-                browser = p.chromium.launch(headless=True)
+                browser = p.chromium.launch(headless=True, args=["--disable-lcd-text"])
             except Exception:
-                browser = p.chromium.launch(channel="chrome", headless=True)
+                browser = p.chromium.launch(channel="chrome", headless=True, args=["--disable-lcd-text"])
 
         page = browser.new_page(viewport={"width": width, "height": 4800})
         page.goto(abs_html, wait_until="networkidle")
@@ -444,6 +444,7 @@ def render_edge_headless(html_path, png_path, width, edge_path):
     result = subprocess.run(
         [
             edge_path, "--headless", "--disable-gpu",
+            "--disable-lcd-text",
             "--no-pdf-header-footer",
             f"--screenshot={abs_png}",
             f"--window-size={width},{height}",
@@ -475,6 +476,7 @@ def render_chrome_headless(html_path, png_path, width, chrome_path):
     subprocess.run(
         [
             chrome_path, "--headless", "--disable-gpu",
+            "--disable-lcd-text",
             f"--screenshot={abs_png}",
             f"--window-size={width},{height}",
             abs_html
@@ -510,7 +512,7 @@ def render_playwright_npx(html_path, png_path, width):
     script = f"""
     const {{ chromium }} = require('playwright');
     (async () => {{
-        const browser = await chromium.launch({{ headless: true }});
+        const browser = await chromium.launch({{ headless: true, args: ['--disable-lcd-text'] }});
         const page = await browser.newPage({{ viewport: {{ width: {width}, height: 4800 }} }});
         await page.goto('file:///{abs_html}');
         await page.waitForTimeout(500);

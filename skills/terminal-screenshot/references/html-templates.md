@@ -52,19 +52,18 @@ Best for local Windows and PowerShell transcripts.
     box-shadow: 0 18px 50px rgba(0,0,0,0.55);
   }
   .titlebar {
-    height: 38px; background: #202020; display: flex; align-items: center;
-    border-bottom: 1px solid #303030; user-select: none;
+    height: 40px; background: #202020; display: flex; align-items: center;
+    user-select: none;
+  }
+  .fluent {
+    font-family: 'Segoe Fluent Icons','Segoe MDL2 Assets'; line-height: 1;
   }
   .tabs { display: flex; align-items: center; flex: 1; min-width: 0; height: 100%; }
   .tab {
-    height: 32px; min-width: 168px; padding: 0 14px; margin-left: 8px; align-self: flex-end;
+    height: 32px; min-width: 240px; padding: 0 14px; margin-left: 8px; align-self: flex-end;
     background: #0c0c0c; color: #f2f2f2; display: flex; align-items: center; gap: 9px;
-    border: 1px solid #303030; border-bottom: 0; border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
     font: 12px/1 'Segoe UI','Microsoft YaHei UI',sans-serif; position: relative;
-  }
-  .tab::after {
-    content: ''; position: absolute; left: 10px; right: 10px; bottom: 0;
-    height: 2px; background: #0078d4; border-radius: 2px 2px 0 0;
   }
   .ps-icon {
     width: 16px; height: 16px; border-radius: 3px; background: #012456;
@@ -72,41 +71,20 @@ Best for local Windows and PowerShell transcripts.
     font: 700 10px/1 'Segoe UI',sans-serif;
   }
   .tab-action {
-    width: 36px; height: 34px; margin-left: 0; align-self: center;
+    width: 28px; height: 28px; margin-left: 4px; align-self: center;
     display: flex; align-items: center; justify-content: center;
-    border-radius: 4px; position: relative;
+    border-radius: 4px; position: relative; color: #DDDDDD;
   }
+  .tab-action .fluent { font-size: 12px; }
   .tab-action:hover { background: rgba(255,255,255,0.08); }
-  .new-tab::before, .new-tab::after {
-    content: ''; position: absolute; background: #c8c8c8; border-radius: 1px;
-  }
-  .new-tab::before { width: 12px; height: 1.5px; }
-  .new-tab::after { width: 1.5px; height: 12px; }
-  .chevron::before {
-    content: ''; width: 7px; height: 7px; border-right: 1.6px solid #c8c8c8;
-    border-bottom: 1.6px solid #c8c8c8; transform: translateY(-2px) rotate(45deg);
-  }
   .caption-buttons { display: flex; align-self: stretch; margin-left: auto; }
   .caption-btn {
-    width: 46px; height: 38px; display: flex; align-items: center; justify-content: center;
-    position: relative;
+    width: 46px; height: 40px; display: flex; align-items: center; justify-content: center;
   }
+  .caption-btn .fluent { font-size: 10px; color: #FFFFFF; }
+  .tab-close { font-size: 10px; color: #DDDDDD; margin-left: auto; }
   .caption-btn:hover { background: rgba(255,255,255,0.08); }
   .caption-btn.close:hover { background: #c42b1c; }
-  .caption-btn::before, .caption-btn::after {
-    content: ''; position: absolute; box-sizing: border-box;
-  }
-  .caption-btn.minimize::before {
-    width: 10px; height: 1.2px; background: #c8c8c8;
-  }
-  .caption-btn.maximize::before {
-    width: 10px; height: 10px; border: 1.3px solid #c8c8c8;
-  }
-  .caption-btn.close::before, .caption-btn.close::after {
-    width: 12px; height: 1.3px; background: #d8d8d8;
-  }
-  .caption-btn.close::before { transform: rotate(45deg); }
-  .caption-btn.close::after { transform: rotate(-45deg); }
   .body {
     padding: 15px 18px 17px; min-height: 120px;
     background: #0c0c0c; color: #cccccc; white-space: pre-wrap;
@@ -132,25 +110,25 @@ Best for local Windows and PowerShell transcripts.
 <div class="window">
   <div class="titlebar">
     <div class="tabs">
-      <div class="tab"><span class="ps-icon">&gt;_</span><span>PowerShell</span></div>
-      <div class="tab-action new-tab" aria-label="New tab"></div>
-      <div class="tab-action chevron" aria-label="Tab menu"></div>
+      <div class="tab"><span class="ps-icon">&gt;_</span><span>PowerShell</span><span class="fluent tab-close">&#xE8BB;</span></div>
+      <div class="tab-action" aria-label="New tab"><span class="fluent">&#xE710;</span></div>
+      <div class="tab-action" aria-label="Tab menu"><span class="fluent">&#xE70D;</span></div>
     </div>
     <div class="caption-buttons">
-      <span class="caption-btn minimize" aria-label="Minimize"></span>
-      <span class="caption-btn maximize" aria-label="Maximize"></span>
-      <span class="caption-btn close" aria-label="Close"></span>
+      <span class="caption-btn" aria-label="Minimize"><span class="fluent">&#xE921;</span></span>
+      <span class="caption-btn" aria-label="Maximize"><span class="fluent">&#xE922;</span></span>
+      <span class="caption-btn close" aria-label="Close"><span class="fluent">&#xE8BB;</span></span>
     </div>
   </div>
   <div class="body">
-<span class="prompt">PS <span class="ps-path">C:\Users\qoobee\Desktop\Qoobee-skills</span>&gt;</span> <span class="ps-command">Get-ChildItem</span> <span class="ps-param">-Force</span>
-<span class="output">    Directory: C:\Users\qoobee\Desktop\Qoobee-skills
+<span class="prompt">PS <span class="ps-path">C:\Users\dev\Desktop\projects</span>&gt;</span> <span class="ps-command">Get-ChildItem</span> <span class="ps-param">-Force</span>
+<span class="output">    Directory: C:\Users\dev\Desktop\projects
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 d----           4/30/2026  10:42 AM                terminal-screenshot
 -a---           4/30/2026  10:10 AM           1420 README.md</span>
-<span class="prompt">PS <span class="ps-path">C:\Users\qoobee\Desktop\Qoobee-skills</span>&gt;</span><span class="cursor"></span>
+<span class="prompt">PS <span class="ps-path">C:\Users\dev\Desktop\projects</span>&gt;</span><span class="cursor"></span>
   </div>
 </div>
 </body></html>
@@ -183,19 +161,18 @@ Best for local macOS development commands.
   }
   .window {
     width: 860px; margin: 0 auto; overflow: hidden; border-radius: 10px;
-    background: #1d1f21; box-shadow: 0 20px 52px rgba(0,0,0,0.48);
+    background: #1d1f21; box-shadow: 0 22px 70px 4px rgba(0,0,0,0.56);
     border: 1px solid rgba(255,255,255,0.08);
   }
   .titlebar {
-    height: 34px; background: linear-gradient(#3a3a3a, #2d2d2d);
-    display: grid; grid-template-columns: 86px 1fr 86px; align-items: center;
-    border-bottom: 1px solid rgba(0,0,0,0.55);
+    height: 28px; background: #1d1f21;
+    display: grid; grid-template-columns: 86px 1fr 86px; align-items: start;
   }
-  .traffic { display: flex; gap: 8px; padding-left: 13px; }
-  .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18); }
-  .red { background: #ff5f57; } .yellow { background: #febc2e; } .green { background: #28c840; }
+  .traffic { display: flex; gap: 8px; padding-left: 14px; padding-top: 10px; }
+  .dot { width: 12px; height: 12px; display: block; }
   .title {
-    color: #b7b7b7; text-align: center; font: 12px/1 -apple-system,'SF Pro Text','PingFang SC',sans-serif;
+    color: #d9d9d9; text-align: center; align-self: center;
+    font: 600 13px/1 -apple-system,'SF Pro Text','PingFang SC',sans-serif;
     letter-spacing: -0.01em;
   }
   .body {
@@ -220,16 +197,16 @@ Best for local macOS development commands.
 <body>
 <div class="window">
   <div class="titlebar">
-    <div class="traffic"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-    <div class="title">qoobee — zsh — 100x30</div>
+    <div class="traffic"><span class="dot"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#E0443E"/><circle cx="6" cy="6" r="5" fill="#FF5F57"/></svg></span><span class="dot"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#D89E24"/><circle cx="6" cy="6" r="5" fill="#FEBC2E"/></svg></span><span class="dot"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#1AAA29"/><circle cx="6" cy="6" r="5" fill="#28C840"/></svg></span></div>
+    <div class="title">dev — zsh — 100x30</div>
     <div></div>
   </div>
   <div class="body">
-<span class="prompt"><span class="mac-userhost">qoobee@MacBook-Pro</span> <span class="mac-path">Qoobee-skills</span> %</span> <span class="cmd">brew services list</span>
+<span class="prompt"><span class="mac-userhost">dev@MacBook-Pro</span> <span class="mac-path">projects</span> %</span> <span class="cmd">brew services list</span>
 <span class="output">Name          Status  User   File
 mongodb       none
-redis         started qoobee ~/Library/LaunchAgents/homebrew.mxcl.redis.plist</span>
-<span class="prompt"><span class="mac-userhost">qoobee@MacBook-Pro</span> <span class="mac-path">Qoobee-skills</span> %</span><span class="cursor"></span>
+redis         started dev ~/Library/LaunchAgents/homebrew.mxcl.redis.plist</span>
+<span class="prompt"><span class="mac-userhost">dev@MacBook-Pro</span> <span class="mac-path">projects</span> %</span><span class="cursor"></span>
   </div>
 </div>
 </body></html>
@@ -337,25 +314,49 @@ Formatting notes:
   html, body { overflow: hidden; margin: 0; padding: 0; }
   html { background: #2a2a2a; }
   ::-webkit-scrollbar { display: none; }
-  * { scrollbar-width: none; -ms-overflow-style: none; }
+  * { scrollbar-width: none; -ms-overflow-style: none; box-sizing: border-box; }
 
   body {
     background: #2a2a2a; margin: 0; padding: 28px 20px;
-    font-family: 'Consolas','Courier New','Microsoft YaHei',monospace;
+    font-family: 'Ubuntu Mono','DejaVu Sans Mono','Consolas','Microsoft YaHei',monospace;
   }
   .window {
-    background: #1e1e1e; border-radius: 8px; overflow: hidden;
+    background: #1e1e1e; border-radius: 12px; overflow: hidden;
     box-shadow: 0 6px 24px rgba(0,0,0,0.5); border: 1px solid #3c3c3c;
     width: 740px; margin: 0 auto;
   }
-  .titlebar {
-    background: #2d2d2d; padding: 7px 14px; display: flex; align-items: center;
-    border-bottom: 1px solid #3c3c3c;
+  .headerbar {
+    height: 47px; background: #303030; padding: 0 6px;
+    display: flex; align-items: center; user-select: none;
   }
-  .titlebar-text {
-    color: #999; font-size: 11px; text-align: center; flex: 1;
-    font-family: -apple-system,'Segoe UI','Microsoft YaHei',sans-serif;
+  .hb-side { flex: 1; display: flex; align-items: center; gap: 4px; min-width: 0; }
+  .hb-side.right { justify-content: flex-end; }
+  .pill {
+    display: flex; align-items: center; gap: 7px; height: 35px; padding: 0 14px;
+    background: #3d3d3d; border-radius: 999px; color: #eeeeee;
+    font: 12px/1 Cantarell, system-ui, 'Segoe UI', sans-serif;
   }
+  .hb-btn {
+    width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
+    border-radius: 6px; position: relative;
+  }
+  .hb-title {
+    flex: 1; text-align: center; color: #eeeeee;
+    font: 700 13px/1 Cantarell, system-ui, 'Segoe UI', sans-serif;
+    white-space: nowrap; overflow: hidden;
+  }
+  .newtab::before, .newtab::after {
+    content: ''; position: absolute; background: #dddddd; border-radius: 1px;
+  }
+  .newtab::before { width: 12px; height: 1.5px; }
+  .newtab::after { width: 1.5px; height: 12px; }
+  .win-min::before { content: ''; width: 11px; height: 1px; background: #dddddd; }
+  .win-max::before { content: ''; width: 9px; height: 9px; border: 1px solid #dddddd; }
+  .win-close::before, .win-close::after {
+    content: ''; position: absolute; width: 12px; height: 1px; background: #dddddd;
+  }
+  .win-close::before { transform: rotate(45deg); }
+  .win-close::after { transform: rotate(-45deg); }
   .body {
     padding: 14px 18px; font-size: 14px; line-height: 1.4;
     white-space: pre-wrap; color: #d4d4d4;
@@ -368,8 +369,18 @@ Formatting notes:
 </style></head>
 <body>
 <div class="window">
-  <div class="titlebar">
-    <span class="titlebar-text">a2023080901018@server:~</span>
+  <div class="headerbar">
+    <div class="hb-side">
+      <span class="pill"><svg width="16" height="16" viewBox="0 0 16 16"><g fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M4.5 6.5 L6.5 8.5 L4.5 10.5"/><path d="M8 10.5 H11.5"/></g></svg><span>Terminal</span></span>
+    </div>
+    <div class="hb-title">a2023080901018@server:~</div>
+    <div class="hb-side right">
+      <span class="hb-btn newtab" aria-label="New tab"></span>
+      <span class="hb-btn" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16"><g fill="#dddddd"><rect x="0" y="3" width="16" height="2" rx="1"/><rect x="0" y="7" width="16" height="2" rx="1"/><rect x="0" y="11" width="16" height="2" rx="1"/></g></svg></span>
+      <span class="hb-btn win-min" aria-label="Minimize"></span>
+      <span class="hb-btn win-max" aria-label="Maximize"></span>
+      <span class="hb-btn win-close" aria-label="Close"></span>
+    </div>
   </div>
   <div class="body">
     <!-- CONTENT HERE -->

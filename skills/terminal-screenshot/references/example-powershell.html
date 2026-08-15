@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <style>
   html, body { margin: 0; overflow: hidden; }
+  html { background: #0B1220; }
 
   /* Stage: procedural Windows 11 bloom-style wallpaper (see references/stage-backgrounds.md) */
   .stage {
@@ -29,7 +30,7 @@
     color: #CCCCCC;
   }
 
-  /* Windows Terminal chrome */
+  /* Windows Terminal chrome（真实 WT 1.24 实测：标签条 40px，caption 46x40） */
   .titlebar {
     display: flex;
     align-items: center;
@@ -37,22 +38,34 @@
     background: #1F1F1F;
     padding: 0 6px;
   }
+  .fluent {
+    font-family: 'Segoe Fluent Icons', 'Segoe MDL2 Assets';
+    line-height: 1;
+  }
   .tab {
     display: flex;
     align-items: center;
     gap: 8px;
+    box-sizing: border-box;
     background: #0C0C0C;
     color: #fff;
     font-size: 12px;
-    padding: 6px 16px;
+    height: 32px;
+    min-width: 240px;
+    padding: 0 16px;
     border-radius: 7px 7px 0 0;
-    margin-top: 6px;
+    align-self: flex-end;
   }
   .tab .ps-logo {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: conic-gradient(from 45deg, #5391FE, #384DAD);
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: #012456;
+    color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 9px/1 'Cascadia Mono', Consolas, monospace;
   }
   .tab-action {
     display: flex;
@@ -61,35 +74,12 @@
     width: 28px;
     height: 28px;
     margin-left: 4px;
-    color: #999;
-    font-size: 14px;
+    color: #DDDDDD;
     border-radius: 4px;
+    align-self: center;
   }
-  .plus {
-    position: relative;
-    width: 12px;
-    height: 12px;
-  }
-  .plus::before, .plus::after {
-    content: "";
-    position: absolute;
-    background: #999;
-    left: 0;
-    top: 5px;
-    width: 12px;
-    height: 2px;
-  }
-  .plus::after {
-    transform: rotate(90deg);
-  }
-  .chevron {
-    width: 10px;
-    height: 10px;
-    border-right: 2px solid #999;
-    border-bottom: 2px solid #999;
-    transform: rotate(45deg) translateY(-2px);
-  }
-  .caption { margin-left: auto; display: flex; }
+  .tab-action .fluent { font-size: 12px; }
+  .caption { margin-left: auto; display: flex; align-self: stretch; }
   .caption-btn {
     width: 46px;
     height: 40px;
@@ -97,35 +87,8 @@
     align-items: center;
     justify-content: center;
   }
-  .cap-min, .cap-max, .cap-close {
-    width: 10px;
-    height: 10px;
-    position: relative;
-  }
-  .cap-min::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #bbb;
-  }
-  .cap-max {
-    border: 1px solid #bbb;
-    border-radius: 1px;
-  }
-  .cap-close::before, .cap-close::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #bbb;
-  }
-  .cap-close::before { transform: rotate(45deg); }
-  .cap-close::after { transform: rotate(-45deg); }
+  .caption-btn .fluent { font-size: 10px; color: #FFFFFF; }
+  .tab-close { font-size: 10px; color: #DDDDDD; margin-left: auto; }
 
   .body { padding: 14px 18px 18px; white-space: pre; }
   .prompt { color: #E5E510; }
@@ -150,18 +113,18 @@
 <div class="stage">
   <div class="window">
     <div class="titlebar">
-      <div class="tab"><span class="ps-logo"></span> PowerShell</div>
-      <div class="tab-action"><span class="plus"></span></div>
-      <div class="tab-action"><span class="chevron"></span></div>
+      <div class="tab"><span class="ps-logo">&gt;_</span><span>PowerShell</span><span class="fluent tab-close">&#xE8BB;</span></div>
+      <div class="tab-action"><span class="fluent">&#xE710;</span></div>
+      <div class="tab-action"><span class="fluent">&#xE70D;</span></div>
       <div class="caption">
-        <div class="caption-btn"><span class="cap-min"></span></div>
-        <div class="caption-btn"><span class="cap-max"></span></div>
-        <div class="caption-btn"><span class="cap-close"></span></div>
+        <div class="caption-btn"><span class="fluent">&#xE921;</span></div>
+        <div class="caption-btn"><span class="fluent">&#xE922;</span></div>
+        <div class="caption-btn"><span class="fluent">&#xE8BB;</span></div>
       </div>
     </div>
     <div class="body"><span class="output-dim">PowerShell 7.4.6 on Windows 11 Pro 23H2</span>
-<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="ps-command">git</span> <span class="ps-param">fetch origin</span>
-<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="ps-command">git</span> <span class="ps-param">status</span>
+<span class="prompt">PS C:\Users\dev\Desktop\Auto-college&gt;</span> <span class="ps-command">git</span> <span class="ps-param">fetch origin</span>
+<span class="prompt">PS C:\Users\dev\Desktop\Auto-college&gt;</span> <span class="ps-command">git</span> <span class="ps-param">status</span>
 <span class="output">On branch master</span>
 <span class="output">Your branch is up to date with 'origin/master'.</span>
 <span class="output"></span>
@@ -172,10 +135,10 @@
 <span class="output">        <span class="ok">modified:   setup.js</span></span>
 <span class="output"></span>
 <span class="output">no changes added to commit (use "git add" and/or "git commit -a")</span>
-<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="ps-command">python</span> <span class="ps-param">skills\terminal-screenshot\scripts\render.py --execute "pytest -q" --name pytest-run</span>
+<span class="prompt">PS C:\Users\dev\Desktop\Auto-college&gt;</span> <span class="ps-command">python</span> <span class="ps-param">skills\terminal-screenshot\scripts\render.py --execute "pytest -q" --name pytest-run</span>
 <span class="output">[tier1] freeze --execute (real command, real ANSI capture)</span>
 <span class="ok">12 passed in 3.42s</span>
-<span class="prompt">PS C:\Users\qoobee\Desktop\Auto-college&gt;</span> <span class="cursor"></span></div>
+<span class="prompt">PS C:\Users\dev\Desktop\Auto-college&gt;</span> <span class="cursor"></span></div>
   </div>
 </div>
 </body>
