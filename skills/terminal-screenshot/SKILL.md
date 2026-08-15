@@ -50,6 +50,11 @@ preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 - **终端外的背景也要真实**：有窗口的截图必须悬浮在桌面壁纸上（见
   `references/stage-backgrounds.md` 的程序化壁纸预设：win11-bloom / macos-gradient /
   plain-dark / custom 真实图片），阴影与圆角匹配对应 OS；不要纯色贴边。
+- **顶部栏必须符合官方规格**：标题栏高度、caption 按钮尺寸/字形、标签尺寸、
+  红绿灯几何与配色严格按 `references/chrome-spec.md`（来源：Microsoft Learn、
+  microsoft/terminal、CC0 逆向 SVG，已存 `assets/macos-traffic-lights/`）。
+  完成模板后按 `references/chrome-validation.md` 协议用多模态模型 +
+  `scripts/chrome_probe.py` 探针校验通过才算交付。
 - **短输出克制**：短 Linux/服务器输出渲染为无边框证据片段（无舞台），除非内容含
   SSH 登录过程或用户明确要完整终端窗口（Tier 3 质检会警告）。
 - **工具缺失不打断流程**：render.py 会尝试自动安装（brew/go/scoop/cargo），
