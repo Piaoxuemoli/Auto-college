@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8">
+<style>
+  html, body { overflow: hidden; margin: 0; padding: 0; }
+  html { background: #171c29; }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; -ms-overflow-style: none; box-sizing: border-box; }
+
+  /* Stage wrapper (not template chrome): macos-gradient preset from
+     references/stage-backgrounds.md. Template M1 chrome CSS below is per
+     references/chrome-spec.md: 28px titlebar fused with content, CC0
+     traffic-light SVGs (1px darker ring), 13px semibold centered title. */
+  .stage {
+    padding: 48px 56px;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(800px 500px at 22% 18%, rgba(255, 158, 128, 0.22), transparent 60%),
+        radial-gradient(900px 600px at 78% 30%, rgba(96, 160, 255, 0.26), transparent 62%),
+        radial-gradient(700px 500px at 50% 88%, rgba(142, 112, 219, 0.22), transparent 60%),
+        linear-gradient(160deg, #232737 0%, #1d2434 52%, #171c29 100%);
+  }
+
+  body {
+    background: #171c29; margin: 0;
+    font-family: 'SF Mono','Menlo','Monaco','PingFang SC',monospace;
+  }
+  .window {
+    width: 860px; margin: 0 auto; overflow: hidden; border-radius: 10px;
+    background: #1d1f21; box-shadow: 0 22px 70px 4px rgba(0,0,0,0.56);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .titlebar {
+    height: 28px; background: #1d1f21;
+    display: grid; grid-template-columns: 86px 1fr 86px; align-items: start;
+  }
+  .traffic { display: flex; gap: 8px; padding-left: 14px; padding-top: 10px; }
+  .dot { width: 12px; height: 12px; display: block; }
+  .title {
+    color: #d9d9d9; text-align: center; align-self: center;
+    font: 600 13px/1 -apple-system,'SF Pro Text','PingFang SC',sans-serif;
+    letter-spacing: -0.01em;
+  }
+  .body {
+    padding: 15px 17px 18px; min-height: 126px;
+    color: #c5c8c6; background: #1d1f21; white-space: pre-wrap;
+    font-size: 13px; line-height: 1.45; letter-spacing: -0.01em;
+  }
+  .prompt { color: #c5c8c6; }
+  .mac-userhost { color: #81a2be; }
+  .mac-path { color: #b5bd68; }
+  .cmd { color: #ffffff; }
+  .output { color: #c5c8c6; }
+  .dim { color: #7c7c7c; }
+  .stderr, .err { color: #cc6666; }
+  .ok { color: #b5bd68; }
+  .warn { color: #f0c674; }
+  .cursor {
+    display: inline-block; width: 7px; height: 14px; margin-left: 1px;
+    background: #c5c8c6; vertical-align: -2px;
+  }
+</style></head>
+<body>
+<div class="stage">
+  <div class="window">
+    <div class="titlebar">
+      <div class="traffic"><span class="dot"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#E0443E"/><circle cx="6" cy="6" r="5" fill="#FF5F57"/></svg></span><span class="dot"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#D89E24"/><circle cx="6" cy="6" r="5" fill="#FEBC2E"/></svg></span><span class="dot"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="6" fill="#1AAA29"/><circle cx="6" cy="6" r="5" fill="#28C840"/></svg></span></div>
+      <div class="title">dev — zsh — 80x24</div>
+      <div></div>
+    </div>
+    <div class="body">
+<span class="prompt"><span class="mac-userhost">dev@MacBook-Pro</span> <span class="mac-path">Auto-college</span> %</span> <span class="cmd">git status</span>
+<span class="output">On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+        <span class="ok">modified:   README.md</span>
+        <span class="ok">modified:   setup.js</span>
+
+no changes added to commit (use "git add" and/or "git commit -a")</span>
+<span class="prompt"><span class="mac-userhost">dev@MacBook-Pro</span> <span class="mac-path">Auto-college</span> %</span><span class="cursor"></span>
+    </div>
+  </div>
+</div>
+</body></html>
