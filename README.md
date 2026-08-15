@@ -1,81 +1,48 @@
 # Auto-college
 
-聚焦大学课程场景的 Claude Code / Cursor Skills：**逼真终端截图**（核心）+
-**实验报告** 流程。终端截图采用三档渲染架构，让真实终端引擎（[freeze](https://github.com/charmbracelet/freeze)、
-[termframe](https://github.com/pambirus/termframe)）处理着色与排版，逼真度物理级。
+逼真终端截图生成器 + 实验报告流程。核心是 terminal-screenshot skill：把终端
+命令输出渲染成与实机无异的 PNG 证据截图。
 
-Claude Code / Cursor skills focused on college coursework: **realistic terminal
-screenshots** (core, three-tier rendering powered by real terminal engines) plus a
-streamlined **lab report** workflow.
+Realistic terminal screenshot generator (core) plus a streamlined lab-report
+workflow. Terminal output in, indistinguishable-from-real PNG out.
 
----
+## 效果 / Examples
 
-## 快速安装 / Quick Start
+| Windows Terminal | macOS Terminal | GNOME Terminal (Ubuntu) |
+|---|---|---|
+| ![Windows](skills/terminal-screenshot/example.png) | ![macOS](skills/terminal-screenshot/example-macos.png) | ![GNOME](skills/terminal-screenshot/example-gnome.png) |
 
-### 方式一：脚本一键安装（推荐）
+三平台顶部栏（caption 按钮 / 红绿灯 / headerbar 药丸与汉堡菜单）均按官方
+规格绘制（Microsoft Learn、libadwaita、CC0 逆向 SVG），并经像素探针 +
+多模态模型对照实机金标准校验。示例源文件在 `skills/terminal-screenshot/references/`，
+可改可重渲染。
 
-在你的**项目根目录**下执行（需要 [Node.js](https://nodejs.org/)）：
+## 安装 / Install
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/setup.js | node
 ```
 
-脚本会自动完成：检测平台（Claude Code / Cursor）→ clone 仓库 → 复制 skills → 清理临时文件。
+或让 Agent 执行："从 https://github.com/Piaoxuemoli/Auto-college 安装 skills"。
 
-### 方式二：让 Agent 帮你装
+## 使用 / Usage
 
-```text
-帮我从 https://github.com/Piaoxuemoli/Auto-college 安装 skills 到当前项目
-```
-
-### 安装后使用
-
-重启 Agent，直接描述任务即可：
+重启 Agent 后直接描述任务：
 
 ```text
 把这段 PowerShell 输出渲染成终端截图
-```
-
-```text
+伪造一段 GPU 服务器上的训练日志截图
 根据实验手册生成实验报告，运行证据用终端截图
 ```
 
----
-
 ## Skills
 
-### [terminal-screenshot](docs/terminal-screenshot.md)（核心）
+- **[terminal-screenshot](docs/terminal-screenshot.md)** — 三档渲染：
+  freeze 真实执行（物理级真实）→ termframe 真模拟器渲染 ANSI（伪造内容）→
+  HTML 高保真模板回退。全平台，工具缺失自动降级。
+- **[lab-report](docs/lab-report.md)** — 实验报告精简流程，运行证据由
+  terminal-screenshot 生成。
 
-终端命令输出 → 逼真 PNG 截图，三档渲染架构：
+## 许可 / License
 
-1. **Tier 1 — freeze 真实执行**：本机可执行的命令用
-   [freeze](https://github.com/charmbracelet/freeze) 真实运行并捕获 ANSI 输出，字体/着色/间距物理级真实。
-2. **Tier 2 — ANSI + termframe**：伪造内容（GPU 服务器、SSH 远程等）生成为 ANSI 转义序列，
-   交给真实终端模拟器 [termframe](https://github.com/pambirus/termframe) 渲染（内置 iTerm2 主题与窗口样式）。
-3. **Tier 3 — HTML 回退**：无外部工具时用高保真 HTML 模板 + 无头浏览器截图，
-   模板吸收 freeze/codeshot 视觉体系（外圈壁纸背景、圆角、阴影）。
-
-带窗口的截图悬浮在程序化桌面壁纸上（仿 Windows 11 / macOS 壁纸预设，或自定义真实壁纸），
-窗口阴影与圆角按 OS 匹配。全平台支持（Windows/macOS/Linux），工具缺失自动降级。
-
-Render terminal outputs as realistic PNGs via a three-tier pipeline: real
-execution through freeze, real-terminal-engine rendering through termframe for
-forged content, and an HTML template fallback.
-
-![terminal-screenshot 示例 / Example](skills/terminal-screenshot/example.png)
-
----
-
-### [lab-report](docs/lab-report.md)
-
-实验报告精简流程：本地学生信息复用 → 材料分类（可执行/已有数据/纯理论）→
-执行实验并用 terminal-screenshot 生成运行证据 → 十段式模板成稿 → DOCX 导出。
-
-A streamlined lab-report workflow: reusable profile → material classification →
-execute the experiment with terminal-screenshot evidence → ten-section template →
-DOCX export.
-
----
-
-![GitHub stars](https://img.shields.io/github/stars/Piaoxuemoli/Auto-college?style=social)
-![GitHub Created At](https://img.shields.io/github/created-at/Piaoxuemoli/Auto-college)
+[MIT](LICENSE)，另见 `skills/terminal-screenshot/assets/` 内各素材许可说明。

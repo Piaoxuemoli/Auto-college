@@ -15,7 +15,7 @@ description: >
 ## 流程
 
 1. **建档**：运行 `scripts/profile_config.py status` 读取本地学生信息（存于
-   `~/.qoobee-skills/lab-report/profile.json`，缺什么问什么，只问一次）。
+   `~/.auto-college/lab-report/profile.json`，缺什么问什么，只问一次）。
    自建输出目录 `outputs/<experiment-name>/`（含 `screenshots/`、`raw_outputs/`）；
    多文件输入用 `scripts/index_source_files.py` 生成清单。
    有课程模板时用 `scripts/course_templates.py get/save` 复用。

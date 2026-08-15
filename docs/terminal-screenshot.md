@@ -62,24 +62,46 @@ preset 支持：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 
 完整预设与检测规则见 `skills/terminal-screenshot/references/terminal-types.md`。
 
+## 示例 / Examples（三平台，源文件可复现）
+
+```bash
+python scripts/render.py --html references/example-powershell.html --name example      # Windows
+python scripts/render.py --html references/example-macos-zsh.html --name example-macos # macOS
+python scripts/render.py --html references/example-gnome-terminal.html --name example-gnome
+```
+
+| 平台 | 成品 | 要点 |
+|------|------|------|
+| Windows Terminal | `example.png` | 40px 标签条（实机基准）、Segoe Fluent Icons 字形、46×40 caption |
+| macOS Terminal | `example-macos.png` | 28px 融合标题栏、CC0 双圆红绿灯（1px 描边环） |
+| GNOME/Ubuntu | `example-gnome.png` | 47px libadwaita headerbar、药丸标签、汉堡菜单、CSD 控制钮 |
+
 ## 文件结构 / File Structure
 
 ```
 terminal-screenshot/
 ├── SKILL.md                    # Skill 指令 / Skill instructions
-├── example.png                 # 样例输出 / Sample output
+├── example*.png                # 三平台示例成品 / sample outputs
 ├── outputs/                    # 生成物（git 忽略）/ generated outputs (gitignored)
 ├── configs/
 │   └── freeze-base.json        # Tier 1 freeze 视觉配置 / freeze visual config
+├── assets/
+│   ├── golden/                 # 校验金标准（含许可说明）/ validation goldens
+│   ├── macos-traffic-lights/   # CC0 红绿灯 SVG / CC0 traffic-light SVGs
+│   └── symbolic/               # CC0 自绘 GNOME 图标 / CC0 self-drawn GNOME icons
 ├── references/
 │   ├── terminal-types.md       # 色板与检测规则 / palettes & detection rules
-│   ├── html-templates.md       # HTML/CSS 模板（含 freeze 风格舞台样式）
-│   ├── stage-backgrounds.md    # 程序化壁纸舞台预设 / procedural wallpaper stages
-│   └── example-powershell.html # example.png 的可复现源文件 / reproducible source
+│   ├── html-templates.md       # HTML/CSS 模板（P1/M1/A=libadwaita）
+│   ├── stage-backgrounds.md    # 程序化壁纸舞台 / procedural wallpaper stages
+│   ├── chrome-spec.md          # 顶部栏官方规格 / official chrome specs
+│   ├── chrome-validation.md    # 多模态校验协议 / validation protocol
+│   ├── kimi-validation-prompt.md # 一键执行校验的 prompt / ready-to-run prompt
+│   └── example-*.html          # 三平台示例源 / reproducible example sources
 └── scripts/
     ├── render.py               # 统一渲染入口 / unified three-tier entry
-    ├── ansi_builder.py         # session spec → ANSI 转义序列 / spec → ANSI
-    └── html_to_png.py          # Tier 3 HTML→PNG 回退管线 / fallback pipeline
+    ├── ansi_builder.py         # session spec → ANSI / spec → ANSI
+    ├── html_to_png.py          # Tier 3 HTML→PNG 回退 / fallback pipeline
+    └── chrome_probe.py         # 像素探针 / pixel probe
 ```
 
 ## 真实背景 / Realistic Backdrops

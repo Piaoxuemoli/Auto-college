@@ -102,7 +102,7 @@ in the screenshot; it appears inside a local terminal window through SSH.
 - Root shell: `root@prod-api-02:/var/log#`
 - Conda/env prefix: `(base) ubuntu@gpu-a100-01:~/project$`
 - SSH entry should look like:
-  `PS C:\Users\qoobee> ssh ubuntu@gpu-a100-01`
+  `PS C:\Users\dev> ssh ubuntu@gpu-a100-01`
   then remote prompt begins on following lines.
 
 **Window Chrome:** Use the local host terminal chrome if known. If the user is on Windows,
@@ -136,8 +136,8 @@ Windows 11 Terminal running PowerShell 7, not a Linux terminal with a `PS>` stri
 | Error/Stderr | `#F14C4C` |
 
 **Prompt grammar:**
-- `PS C:\Users\qoobee\Desktop\Qoobee-skills>`
-- `PS C:\Users\qoobee\Desktop\Qoobee-skills [master ≡]>` when git context is useful
+- `PS C:\Users\dev\Desktop\projects>`
+- `PS C:\Users\dev\Desktop\projects [master ≡]>` when git context is useful
 - Continuation prompt: `>>`
 
 **Window Chrome:** Windows Terminal tab strip with a PowerShell icon/title, plus `+`, dropdown
@@ -166,8 +166,8 @@ iTerm-style zsh, with traffic-light controls and a prompt ending in `%`.
 | Error/Stderr | `#CC6666` |
 
 **Prompt grammar:**
-- `qoobee@MacBook-Pro Qoobee-skills %`
-- `MacBook-Pro:Qoobee-skills qoobee$` only when the content clearly comes from older bash
+- `dev@MacBook-Pro projects %`
+- `MacBook-Pro:projects dev$` only when the content clearly comes from older bash
 - For Homebrew, Xcode, and launchctl screenshots, prefer zsh `%`.
 
 **Window Chrome:** macOS traffic lights at left, centered title text, subtle 1px separator,

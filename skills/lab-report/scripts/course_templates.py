@@ -18,7 +18,7 @@ import sys
 
 
 def templates_path(path: str | None = None) -> Path:
-    return Path(path).expanduser() if path else Path.home() / ".qoobee-skills" / "lab-report" / "course_templates.json"
+    return Path(path).expanduser() if path else Path.home() / ".auto-college" / "lab-report" / "course_templates.json"
 
 
 def slugify(value: str) -> str:

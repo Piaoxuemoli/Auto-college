@@ -16,13 +16,13 @@ Never invents results; destructive commands always require confirmation.
 | `paper-only` | 理论/总结类报告 / theoretical writeup |
 
 1. **建档**：`python lab-report/scripts/profile_config.py status` 读取
-   `~/.qoobee-skills/lab-report/profile.json`（缺什么问什么，只问一次）。
+   `~/.auto-college/lab-report/profile.json`（缺什么问什么，只问一次）。
    自建 `outputs/<experiment-name>/`（含 `screenshots/`、`raw_outputs/`）。
 2. **分类**：能推断不询问（见上表）。
 3. **执行**（仅 standard-executable）：普通命令失败可跳过并在交付时说明；
    运行证据统一用 **terminal-screenshot** skill 生成，存入 `screenshots/`。
 4. **成稿**：课程模板（`scripts/course_templates.py get/save`，存于
-   `~/.qoobee-skills/lab-report/course_templates.json`）→ 用户模板 → 内置十段式
+   `~/.auto-college/lab-report/course_templates.json`）→ 用户模板 → 内置十段式
    默认模板（`references/report-template-zh.md` / `-en.md`）。需要时用官方
    docx/pdf skill 导出。
 

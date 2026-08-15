@@ -9,7 +9,7 @@ Usage:
     python profile_config.py path
 
 Profile location:
-    ~/.qoobee-skills/lab-report/profile.json
+    ~/.auto-college/lab-report/profile.json
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ PROFILE_FIELDS = [
 
 
 def profile_path() -> Path:
-    return Path.home() / ".qoobee-skills" / "lab-report" / "profile.json"
+    return Path.home() / ".auto-college" / "lab-report" / "profile.json"
 
 
 def empty_profile() -> dict[str, str]:

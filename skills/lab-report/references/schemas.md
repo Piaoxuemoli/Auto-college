@@ -8,7 +8,7 @@ these structures consistently.
 Stored outside the repository:
 
 ```text
-~/.qoobee-skills/lab-report/profile.json
+~/.auto-college/lab-report/profile.json
 ```
 
 ```json
@@ -38,7 +38,7 @@ Created in every output directory by `scripts/init_output_dir.py`.
   "report_type": "standard-executable",
   "run_mode": "auto",
   "created_at": "2026-04-30T12:00:00",
-  "profile_path": "C:/Users/name/.qoobee-skills/lab-report/profile.json",
+  "profile_path": "C:/Users/name/.auto-college/lab-report/profile.json",
   "profile_complete": true,
   "source_files": [
     "C:/path/to/manual.pdf"
@@ -258,7 +258,7 @@ Rules:
 Stored outside the repository:
 
 ```text
-~/.qoobee-skills/lab-report/course_templates.json
+~/.auto-college/lab-report/course_templates.json
 ```
 
 ```json
