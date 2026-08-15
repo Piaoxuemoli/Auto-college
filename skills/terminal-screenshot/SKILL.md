@@ -50,9 +50,11 @@ preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 - **终端外的背景也要真实**：有窗口的截图必须悬浮在桌面壁纸上（见
   `references/stage-backgrounds.md` 的程序化壁纸预设：win11-bloom / macos-gradient /
   plain-dark / custom 真实图片），阴影与圆角匹配对应 OS；不要纯色贴边。
-- **顶部栏必须符合官方规格**：标题栏高度、caption 按钮尺寸/字形、标签尺寸、
-  红绿灯几何与配色严格按 `references/chrome-spec.md`（来源：Microsoft Learn、
-  microsoft/terminal、CC0 逆向 SVG，已存 `assets/macos-traffic-lights/`）。
+- **顶部栏必须符合官方规格**：Windows（32px 标题栏、46×32 caption、E721/E922/E923/E8BB/E710/E70D）、
+  macOS Terminal（28px 标题栏、红绿灯 12px/20px 间距）、GNOME/Ubuntu（47px headerbar、
+  12px 窗口圆角、汉堡菜单）三类平台规格严格按 `references/chrome-spec.md`。
+  图标素材：CC0 红绿灯 SVG（`assets/macos-traffic-lights/`）、CC0 自绘 GNOME
+  symbolic 图标（`assets/symbolic/`），不引入 Apple/Yaru 版权资产。
   完成模板后按 `references/chrome-validation.md` 协议用多模态模型 +
   `scripts/chrome_probe.py` 探针校验通过才算交付。
 - **短输出克制**：短 Linux/服务器输出渲染为无边框证据片段（无舞台），除非内容含

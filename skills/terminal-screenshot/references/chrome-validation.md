@@ -10,6 +10,7 @@
 - `golden-win-terminal.png`：真实 Windows Terminal（默认主题，一个 PowerShell 标签），
   窗口悬浮在默认壁纸上，100% 缩放（非 HiDPI 或注明 DPI）。
 - `golden-macos-terminal.png`：真实 macOS Terminal（默认主题）。
+- `golden-linux-terminal.png`：真实 Ubuntu gnome-terminal（默认主题，含汉堡菜单）。
 
 金标准只在首次准备；若 OS 大版本变化（如 macOS Tahoe 按钮变大）需重新截取。
 
@@ -64,6 +65,22 @@ python scripts/chrome_probe.py <png> --region top --points 0.02,0.03 0.965,0.03
 | M5 | 1px 描边环 | 视觉（放大 4×裁剪） | 每键外缘有更深的 1px 环 |
 | M6 | 标题栏高度 | 探针 | 28px ±1 |
 | M7 | 与金标准整体对比 | 并排目测 | 同 W11 |
+
+### GNOME / Ubuntu Terminal DUT（Template: Modern Dark GNOME 系）
+
+| # | 项目 | 方法 | 通过标准 |
+|---|------|------|---------|
+| L1 | Headerbar 高度 | 探针垂直扫描 | 47px ±1 |
+| L2 | 窗口圆角 | 视觉（放大 4× 裁剪角部） | 12px ±1，顶角贴 headerbar |
+| L3 | Headerbar 配色 | 探针取样 | 暗色 #303030 系，RGB 距 ≤20 |
+| L4 | 汉堡菜单 | 视觉 | 16px 三条圆头线，headerbar 右侧，居中于 ~35px 命中区 |
+| L5 | 新标签按钮 | 视觉 | 细十字 `+`，与汉堡同排等高 |
+| L6 | 标签药丸 | 视觉 | 全圆角胶囊 + 16px 终端字形 + 文字，激活态底色区分 |
+| L7 | 标题 | 视觉 | 居中 13px bold（Cantarell 观感） |
+| L8 | 与金标准整体对比 | 并排目测 | 同 W11 |
+
+macOS DUT 除 M1-M7 外加验：窗口圆角 ~10px、阴影观感、标题居中 13px semibold、
+标题栏与内容区同色融合（深色主题）。
 
 ## 4. 输出格式（逐项填，禁止跳过）
 

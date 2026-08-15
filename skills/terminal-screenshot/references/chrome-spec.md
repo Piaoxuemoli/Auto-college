@@ -50,6 +50,41 @@
 
 模板中直接内联 assets 里的 SVG（等比缩放到 12px）优于 CSS 圆形手画。
 
+## macOS Terminal 窗口造型（无需任何 Apple 版权素材）
+
+| 元素 | 规格 |
+|------|------|
+| 标题栏高度 | **28px**（标准无工具栏 titlebar） |
+| 红绿灯 | 见上节：12px、间距 20px、中心 ~20,20px、1px 描边环 |
+| 窗口标题 | 居中，系统字体（SF Pro 回退 -apple-system/Helvetica）13px semibold |
+| 标题栏配色 | 深色主题下标题栏与内容区同色融合（Terminal 偏好设置"使用系统主题"时）；亮色主题浅灰 `#ECECEC` 带 1px 底部分隔线 |
+| 窗口圆角/阴影 | 圆角 ~10px；阴影 `0 22px 70px 4px rgba(0,0,0,.56)` 系 |
+| 图标 | 默认标题栏**无图标**（居中标题文字即可），避免使用 Apple 版权图标 |
+
+macOS Chrome 的全部素材需求已由 CC0 红绿灯 SVG + 系统字体 + CSS 覆盖。
+
+## GNOME Terminal / Ubuntu（libadwaita 造型）
+
+| 元素 | 规格 |
+|------|------|
+| Headerbar 高度 | **47px**（上下 6px padding + 35px 控件高度） |
+| Headerbar 配色 | 暗色 `#303030` 系（`@headerbar_bg_color`），与窗口背景接近但有区分；底部无边框（libadwaita 风格下与内容融合） |
+| 窗口圆角 | **12px**（libadwaita `window { border-radius: 12px }`），headerbar 顶角随之圆角 |
+| 汉堡菜单 | headerbar **右侧**，16×16 三条圆头线（`assets/symbolic/open-menu-symbolic.svg`） |
+| 新标签按钮 | 汉堡左侧 `+`（Breeze/GTK 风格细十字） |
+| 标签药丸（pill） | 圆角全圆角胶囊，内嵌 16px 终端字形（`assets/symbolic/utilities-terminal-symbolic.svg`）+ 标签文字；激活药丸底色与内容区分 |
+| 标题 | headerbar 居中，13px bold（Cantarell 回退 system-ui） |
+| 服务器/SSH 场景 | 桌面 Linux 截图才用 GNOME chrome；远程 SSH 仍按"本地终端 chrome + 远程提示符"原则 |
+
+注意：Ubuntu 22.04+ 的 gnome-terminal headerbar 可通过 dconf
+(`/org/gnome/terminal/legacy/headerbar`) 切换菜单/标签按钮，默认含汉堡菜单与
+标签药丸；渲染前与用户确认或采默认布局。
+
+## KDE Konsole / xterm
+
+报告场景较少见：Konsole 用 Breeze 造型（标签条 + `+`/分屏图标，LGPL 资产需随附许可）；
+xterm 无窗口装饰细节要求（纯 X 标题栏，通常渲染为无边框片段即可）。
+
 ## CRT / 其他预设
 
 复古预设无系统 chrome 规格约束，保持模板既有样式即可。
@@ -69,4 +104,10 @@
   https://github.com/microsoft/terminal · https://github.com/microsoft/microsoft-ui-xaml
 - macOS traffic lights 逆向 SVG（CC0）
   https://github.com/lwouis/macos-traffic-light-buttons-as-SVG
+- libadwaita headerbar（47px 默认、`@headerbar_bg_color` ≈ #303030、窗口 12px 圆角）
+  https://gitlab.gnome.org/GNOME/libadwaita/-/issues/207 ·
+  https://discourse.gnome.org/t/how-to-reduce-height-of-gtk-headerbars/3034
+- gnome-terminal headerbar（汉堡菜单/标签药丸，Ubuntu dconf 开关）
+  https://gitlab.gnome.org/GNOME/gnome-terminal/-/issues/44 ·
+  https://unix.stackexchange.com/questions/747356/terminal-hamburger-menu
 - 社区测量的 Win11 caption 按钮 46×32 命中区（非官方文档值，但与系统一致）
