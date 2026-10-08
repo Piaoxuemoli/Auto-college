@@ -69,9 +69,33 @@ MD 保留 LaTeX 源 ②全文层：引入 pdf skill 的 LaTeX 管线做可选模
 - 最小落地：`docs/` 内议题文档（本文件）+ 变更提案模板 + 可迁移说明
 - 验证方式：T1-T6 六个真实议题就是第一批工作负载，用它们跑通流程再抽象
 
-### BMAD vs OpenSpec 调研结论 — `pending`
-（子代理调研中，结论待并入）
+### BMAD vs OpenSpec 调研结论 — `discussing`（待维护者拍板）
+
+一句话定位：**BMAD** 是全生命周期敏捷 AI 开发框架（Analyst/PM/Architect/SM/Dev/QA
+角色代理 + prd/architecture/story 工件，重规划）；**OpenSpec** 是轻量"人与 AI 的
+契约层"（`openspec/` 下 project.md + specs/ + changes/ 提案驱动，纯 Markdown）。
+
+| 维度 | BMAD (V6) | OpenSpec |
+|---|---|---|
+| 根目录 | `.bmad/` | `openspec/` |
+| 核心工件 | agents/workflows/templates + prd、story | project.md、specs/、changes/{proposal,tasks} |
+| 工具集成 | 按 IDE 生成文件（Cursor/Claude/Windsurf…） | 只靠 AGENTS.md + Markdown，任何 agent 零成本 |
+| 单人维护 | 偏重（为团队协作设计） | 明显更优 |
+| 可迁移 | 方法在框架里，升级即变 | 结构即方法，复制文件夹即迁移 |
+
+**调研结论：OpenSpec 为主，吸收 BMAD 的 story 验收粒度。** 理由：①本仓库场景
+"存量仓库 + 一批待议功能议题"与 change 提案模型一一对应；②议题多为中小特性，
+BMAD 全流程过重；③可迁移诉求上 OpenSpec 结构即方法。
+
+最小落地（若采纳）：`openspec init` → 两个 skill 各建 specs 基线 → T1/T3/T4/T5/T6
+各建一个 change 文件夹（proposal.md + tasks.md）→ `openspec validate --strict`
+做门槛。落地前 roadmap.md 保持唯一跟踪源，避免双轨。
+
+来源：[BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
+[BMAD docs](https://docs.bmad-method.org) ·
+[OpenSpec](https://github.com/Fission-AI/OpenSpec) · [openspec.dev](https://openspec.dev)
 
 ## 变更记录
 
-- 2026-10-08 建立；T7 决策并实现；清理本地 `.mimosa/`（已 gitignore）。
+- 2026-10-08 建立；T7 决策并实现；清理本地 `.mimosa/`（已 gitignore）；
+  BMAD vs OpenSpec 调研完成并入（倾向 OpenSpec 为主，待拍板）。
