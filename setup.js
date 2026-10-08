@@ -3,9 +3,11 @@
 /**
  * Auto-college skills installer
  *
- * Detects Claude Code / Cursor and copies skills to the current project.
+ * Detects the agent environment (Claude Code / Cursor) and copies skills there.
+ * When no known environment marker is found (e.g. plain CLI usage), installs to
+ * .agent/skills (created if missing) so the skills stay agent-neutral.
  * Run from your project root:
- *   curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/setup.mjs | node
+ *   curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/setup.js | node
  */
 
 const fs = require("fs");
@@ -26,7 +28,8 @@ function findPlatform() {
   for (const p of platforms) {
     if (fs.existsSync(path.join(cwd, p.marker))) return p;
   }
-  return platforms[0]; // default to Claude Code
+  // Agent-neutral fallback for CLI installs: .agent/skills, created on demand.
+  return { name: "Generic agent (.agent)", dir: ".agent/skills", marker: ".agent" };
 }
 
 function main() {
