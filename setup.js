@@ -15,7 +15,7 @@ const path = require("path");
 const { execFileSync } = require("child_process");
 
 const REPO_URL = "https://github.com/Piaoxuemoli/Auto-college.git";
-const SKILLS = ["lab-report", "terminal-screenshot"];
+const SKILLS = ["lab-report", "terminal-screenshot", "auto-research", "paper-writing", "group-meeting-prep"];
 
 const cwd = process.cwd();
 
