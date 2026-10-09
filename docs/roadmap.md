@@ -11,7 +11,7 @@
   暂不做。macOS 截图非自由许可；外部渲染工具实际使用时再装再验；
   字体跨平台补验待 mac/linux 主机。
 
-## 议题清单（T1-T7 全部 done，2026-10-09 归档）
+## 议题清单（T1-T7 于 2026-10-09 归档；T8 于 2026-10-10 归档）
 
 ### T1 实验报告模板选择 — `done`
 决策：模板目录化。`templates/` + `catalog.md` 索引；优先级课程模板 → 用户 →
@@ -50,6 +50,16 @@ OpenAI-compatible）；退出码 0/1/2；`--emit-prompt` 无配置产出可复�
 决策：安装器环境自动检测（`.claude`/`.cursor`），未知环境默认 `.agent/skills`
 自动新建；README 引导 agent 自检环境后安装。
 
+### T8 上游科研工作流包提炼为本地 skill — `done`
+决策：按用户指定路线拆为两套主线 + 组会准备层，skill 间去耦、无交叉引用：
+auto-research（研究实验 + 状态台账/audit 脚本）、paper-writing（调研阅读
+写作审稿交付）、group-meeting-prep（配图路由与组会汇报）。个人标识清洗
+（品牌词/个人域名/会话统计口径/01-profile 史料剥离；生图模型参数化为
+`~/.auto-college/image-gen.json` 配置）。验证：audit 脚本 11 例实测矩阵通过、
+脚本与模板逐字节一致、去耦与中性扫描为空、三 skill 干跑产物齐全
+（VALIDATION.md 随 changes 归档，git 历史留档）。
+遗留：新会话发现性与真实科研端到端使用待确认（tasks 第 7 条未勾）。
+
 ## 史诗（Epic）：个人工作流体系建设 — 第一循环完成
 
 目标：可迁移的个人工作流体系（议题跟踪、规格驱动、验证闭环、多模态协作、
@@ -79,6 +89,10 @@ spec delta 合并、changes 归档（本文件即是该循环的收尾产物）�
 
 ## 变更记录
 
+- 2026-10-10 T8 完成并归档：上游科研工作流包提炼为 auto-research /
+  paper-writing / group-meeting-prep 三个互相独立的 skill（skills/），
+  specs 三基线建立、changes 目录移除；README、setup.js、AGENTS.md、
+  docs/ 同步。
 - 2026-10-09 T1-T7 实现完成并归档（spec delta 合并进 specs 基线，changes 目录
   移除，git 历史留档）；视觉子智能体验收三平台示例（发现并修复 Windows 长命令
   裁切：正文改 pre-wrap）；image_gen 补 `--emit-prompt` 与示例配置；公式示例入
