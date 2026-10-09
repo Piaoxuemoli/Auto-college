@@ -22,9 +22,9 @@ Never invents results; destructive commands always require confirmation.
 2. **分类**：能推断不询问（见上表）。
 3. **执行**（仅 standard-executable）：普通命令失败可跳过并在交付时说明；
    运行证据统一用 **terminal-screenshot** skill 生成，存入 `screenshots/`。
-4. **成稿**：课程模板（`scripts/course_templates.py get/save`，存于
-   `~/.auto-college/lab-report/course_templates.json`）→ 用户模板 → 内置十段式
-   默认模板（`references/report-template-zh.md` / `-en.md`）。默认交付 md + docx
+4. **成稿**：按 `templates/catalog.md` 选模板：课程模板（`scripts/course_templates.py
+   get/save`，存于 `~/.auto-college/lab-report/course_templates.json`）→ 用户模板 →
+   内置默认（`templates/report-template-zh.md` / `-en.md`）。默认交付 md + docx
    （pdf 按需）；公式转 OMML、图片嵌入规范见 `references/export-guide.md`。
 
 ## 使用 / Usage
@@ -39,7 +39,9 @@ Never invents results; destructive commands always require confirmation.
 lab-report/
 ├── SKILL.md                      # 要求 + 流程 / requirements & workflow
 ├── references/
-│   ├── export-guide.md           # 导出格式/公式/图片规范 / export, math & image rules
+│   └── export-guide.md           # 导出格式/公式/图片规范 / export, math & image rules
+├── templates/
+│   ├── catalog.md                # 模板目录索引 / template catalog index
 │   ├── report-template-zh.md     # 中文十段式模板 / Chinese 10-section template
 │   └── report-template-en.md     # 英文模板 / English template
 ├── scripts/

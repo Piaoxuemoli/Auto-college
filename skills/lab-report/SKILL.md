@@ -25,8 +25,8 @@ description: >
    - `paper-only`：理论/总结类 → 无需执行。
 3. **执行**（仅 standard-executable）：普通命令失败可跳过并在交付时说明；
    运行证据截图统一用 **terminal-screenshot** skill 生成，存入 `screenshots/`。
-4. **成稿**：按十段式大学模板（目的、原理、环境、步骤、代码、结果、分析、结论等，
-   课程模板优先）写 `final_report.md`；默认交付 **md + docx**，pdf 按需。
+4. **成稿**：按 `templates/catalog.md` 选模板（课程模板优先，内置 zh/en 十段式
+   默认兜底）写 `final_report.md`；默认交付 **md + docx**，pdf 按需。
    数学公式保留 LaTeX 源（行内 `$...$`、块级 `$$...$$`），导出 docx 时转 OMML。
    图片统一 PNG、宽 ≤16cm、图注"图 N-M 说明"（宋体 10.5pt 居中），>2MB 先压缩。
    公式与图片规范详见 `references/export-guide.md`。
