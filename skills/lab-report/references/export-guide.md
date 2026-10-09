@@ -71,6 +71,8 @@ pandoc 自动将 LaTeX 数学转为 OMML，无需额外参数。
 - 图注单独成行、居中，位于图片正下方；导出 docx 时设为宋体 10.5pt（五号）、
   不加粗（md 源中即普通文本行，样式在导出时施加）。
 - 正文引用写法：如图 3-2 所示。
+- 英文报告图注用 `Figure N-M: caption`（Times New Roman 10.5pt 居中不加粗），
+  正文引用 `as shown in Figure 3-2`。
 
 插图来源：
 

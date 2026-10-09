@@ -67,9 +67,9 @@ preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 - **工具安装**：freeze → brew / go install / scoop；termframe → brew / cargo / scoop。
   无 Windows 官方安装源时提示用户手动安装，Tier 3 回退在所有平台可用
   （Playwright → npx → Puppeteer → Edge/Chrome headless → wkhtmltoimage）。
-- **字体**：HTML 模板用平台专属字体栈（Windows: Cascadia Mono/Consolas + 微软雅黑
-  回退；macOS: SF Mono/Menlo + PingFang SC；Linux: JetBrains Mono/Ubuntu Mono + Noto Sans CJK），
-  保证中文输出在任何平台不错位。
+- **字体**：本地自托管 OFL 字体优先（Cascadia Code/Mono、JetBrains Mono，
+  `assets/fonts/`，@font-face 三级优先：本地 woff2 → 平台系统栈 → 通用等宽；
+  SF Mono 非 OFL 不可再分发，macOS 模板走系统栈），中文回退走系统字体。
 - **路径**：脚本内部统一 pathlib/`file:///` URL，Windows 反斜杠已处理。
 
 ## 输出

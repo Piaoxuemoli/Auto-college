@@ -1,0 +1,9 @@
+{
+  "_comment": "Copy to ~/.auto-college/image-gen.json and fill in your own service. Any OpenAI-compatible images API works. Never commit a real api_key.",
+  "provider": "image2 example service",
+  "base_url": "https://api.example.com/v1",
+  "model": "image-2",
+  "api_key": "sk-xxx",
+  "default_size": "1024x1024",
+  "timeout_seconds": 120
+}

@@ -36,9 +36,10 @@
 
 ### Requirement: 模板优先级
 
-成稿模板顺序：课程模板（`scripts/course_templates.py` get/save，存
-`~/.auto-college/lab-report/course_templates.json`）→ 用户模板 → 内置十段式
-（`references/report-template-zh.md` / `-en.md`）。
+成稿按 `templates/catalog.md` 选模板，顺序：课程模板（`scripts/course_templates.py`
+get/save，存 `~/.auto-college/lab-report/course_templates.json`）→ 用户模板 →
+学科默认（如 `templates/computer-network-template.md`）→ 内置默认
+（`templates/report-template-zh.md` / `-en.md`，十段式）。任一环节缺失安全落下一级。
 
 ### Requirement: 输出目录
 
@@ -46,7 +47,20 @@
 gitignored），不得写入 skill 源码目录。多文件输入用
 `scripts/index_source_files.py` 生成清单。
 
-### Requirement: 导出
+### Requirement: 导出与公式
 
-用户要求或模板需要时用官方 docx/pdf skill 导出（格式矩阵见
-report-export-formats 变更）。
+- 默认交付 **md + docx** 双格式，pdf 按需（docx→pdf 优先，官方 pdf skill 备选），
+  草稿迭代可 md-only；docx 失败时交付 md + 失败原因说明；
+- 数学公式：源 MD 保留 `$...$` / `$$...$$`，docx 导出转 OMML（官方 docx skill
+  优先，pandoc 回退，双失败以代码字体呈现并在交付说明注明）；
+- 图片：统一 PNG、宽 ≤16cm、图注 `图 N-M 说明`（zh）/ `Figure N-M: caption`（en）
+  居中 10.5pt 不加粗、相对路径引用 `screenshots/`、>2MB 先压缩、缺图用占位说明。
+  细则见 `references/export-guide.md`。
+
+### Requirement: 图片生成适配层
+
+插图（装置图/流程图）可由 `scripts/image_gen.py` 生成：配置
+`~/.auto-college/image-gen.json`（schema 见 `references/image-gen.md` 与
+`configs/image-gen.example.json`），任何 OpenAI-compatible images API 均可。
+退出码 0/1/2 对齐三档哲学；`--emit-prompt` 无配置时产出可复用 prompt 文件
+（exit 0）；api_key 全程脱敏、绝不入库。

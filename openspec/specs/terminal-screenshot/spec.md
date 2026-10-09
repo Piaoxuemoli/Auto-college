@@ -37,14 +37,22 @@ preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 
 ### Requirement: chrome 官方规格
 
-顶部栏三类平台严格按 `references/chrome-spec.md`：
+顶部栏三类平台严格按 `references/chrome-spec.md`（金标准优先原则）：
 
-- Windows：32px 标题栏 + 46×32 caption 按钮（Segoe Fluent Icons 字形）；
-- macOS Terminal：28px 标题栏 + 红绿灯 12px、间距 20px；
-- GNOME：47px headerbar + 12px 窗口圆角 + 汉堡菜单。
+- Windows：标签条以实机金标准为准（本仓库基准 40px / caption 46×40 全出血 /
+  标签 chip 32px 底对齐；无金标准时回退文档默认 34px / 46×32），
+  图标用 Segoe Fluent Icons 官方字形（E921/E922/E923/E8BB/E710/E70D）；
+- macOS Terminal：28px 标题栏 + 红绿灯 12px、间距 20px（CC0 双圆 SVG 含 1px
+  描边环）；
+- GNOME：47px headerbar + 12px 窗口圆角 + 药丸标签 + 汉堡菜单（CC0 symbolic）。
 
 图标只用 CC0 资产（`assets/macos-traffic-lights/`、`assets/symbolic/`），
 不引入 Apple / Yaru 版权资产。
+
+#### Scenario: 无金标准的新平台模板
+
+- **WHEN** 该平台没有实机金标准
+- **THEN** 以 chrome-spec.md 的文档默认值断言几何，并标注"待金标准复核"
 
 ### Requirement: chrome 校验协议
 
@@ -80,8 +88,15 @@ preset 取值：`ssh` / `root` / `zsh` / `powershell` / `cmd` / `crt`。
 - 输出 `outputs/YYYY-MM-DD/HHMMSS-<slug>/`，含 PNG 及对应源文件
   （.ansi/.svg/.html），交付时报目录路径。
 
-### Requirement: 字体（现状基线，待 fonts-local 变更替换）
+### Requirement: 字体（本地自托管）
 
-HTML 模板使用平台字体栈：Windows Cascadia Mono/Consolas + 微软雅黑回退；
-macOS SF Mono/Menlo + PingFang SC；Linux JetBrains Mono/Ubuntu Mono +
-Noto Sans CJK，保证中文输出不错位。
+正文用本地 OFL 字体消除主机依赖：Cascadia Code/Mono（v2407.24）与
+JetBrains Mono（v2.304）存 `assets/fonts/`，模板 `@font-face` 三级优先：
+本地 woff2 → 平台系统栈 → 通用等宽；CJK 不子集化，中文回退走系统字体；
+SF Mono 非 OFL 不可再分发，macOS 模板走系统栈。
+
+### Requirement: 文字折行与抗锯齿
+
+- 长命令行必须折行（模板正文 `white-space: pre-wrap`），不得右缘硬裁切
+  （视觉验收强制项，真实终端行为）；
+- 渲染一律灰度抗锯齿（渲染器全路径 `--disable-lcd-text`），禁止彩色子像素边。

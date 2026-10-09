@@ -99,6 +99,13 @@
 
 [TO BE FILLED]
 
+<!-- 公式书写约定：行内用 $U=IR$，独立公式用独立行 $$ ... $$；导出 docx 时统一转 OMML，
+    详见 references/export-guide.md。示例：
+
+$$ \eta = \frac{P_{out}}{P_{in}} \times 100\% $$
+
+-->
+
 ## 九、总结及心得体会
 
 [TO BE FILLED]

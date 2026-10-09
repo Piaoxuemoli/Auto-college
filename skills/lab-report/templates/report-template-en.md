@@ -99,6 +99,13 @@ Use this template when the user does not provide a custom template. This templat
 
 [TO BE FILLED]
 
+<!-- Formula conventions: inline $U = IR$; display formulas on their own line
+     with $$ ... $$; both convert to OMML on docx export (references/export-guide.md). Example:
+
+$$ \eta = \frac{P_{out}}{P_{in}} \times 100\% $$
+
+-->
+
 ## 9. Summary and Reflections
 
 [TO BE FILLED]

@@ -1,121 +1,88 @@
-# Roadmap — TODO 与讨论进度
+# Roadmap — 议题索引与决策记录
 
-> **详细跟踪已迁移至 openspec/**：变更提案在 `openspec/changes/<id>/`
-> （proposal + tasks + spec delta），能力基线在 `openspec/specs/`，
-> 仓库约定在 `openspec/project.md`。本文件保留为议题索引与决策记录。
-
-本文件是议题索引与决策记录：每个议题记录背景、候选方案、当前倾向与结论。
-状态：`open`（未讨论）→ `discussing`（有候选方案）→ `decided`（已定结论）→ `done`（已实现）。
-维护约定：讨论有新进展就更新对应条目；结论必须写"决策 + 理由"，不留口头共识。
+> **跟踪源已迁移至 openspec/**：能力基线在 `openspec/specs/`（描述当前为真的
+> 系统），仓库约定在 `openspec/project.md`。本文件保留为议题索引与决策记录；
+> 归档的变更提案见 git 历史（`openspec/changes/<id>/`）。
+> 状态：`open` → `discussing` → `decided` → `done`（已实现并归档）。
 
 ## 已搁置
 
-- **实机验证（M7 mac 金标准 / freeze·termframe 实测出图）**：暂不做。
-  macOS 截图为非自由许可无法合法入库；外部渲染工具等实际使用时再装再验。
+- **实机验证（M7 mac 金标准 / freeze·termframe 实测出图 / fonts 三平台渲染）**：
+  暂不做。macOS 截图非自由许可；外部渲染工具实际使用时再装再验；
+  字体跨平台补验待 mac/linux 主机。
 
-## 议题清单
+## 议题清单（T1-T7 全部 done，2026-10-09 归档）
 
-### T1 实验报告模板选择 — `discussing`
-变更提案：[openspec/changes/report-templates-catalog/](../openspec/changes/report-templates-catalog/)
-现状：内置十段式中英文模板（`skills/lab-report/references/report-template-*.md`）+
-课程模板记忆。问题：模板选择逻辑散在 SKILL.md 里，缺"多模板候选 + 用户偏好记忆"。
-候选：①保持现状 ②模板目录化（templates/*.md 按学科/课程分文件，加载时按需选）
-③模板 DSL（frontmatter 声明章节，生成器渲染）。
-倾向：②——成本最低、可迁移性好，与 T6 工作流体系的"可迁移文档"目标一致。
+### T1 实验报告模板选择 — `done`
+决策：模板目录化。`templates/` + `catalog.md` 索引；优先级课程模板 → 用户 →
+学科默认（首个学科模板 computer-network）→ 内置 zh/en；偏好持久化
+`~/.auto-college/lab-report/course_templates.json`（save/get 跨进程命中已验）。
 
-### T2 截图 HTML 的字体 — `discussing`
-变更提案：[openspec/changes/fonts-local/](../openspec/changes/fonts-local/)
-现状：平台字体栈（Cascadia Mono/SF Mono/JetBrains Mono + 中文回退），渲染主机
-缺字体时静默回退，字宽/观感漂移，跨平台可复现性受损。
-候选：①自托管 woff2（Cascadia Code、JetBrains Mono 均为 OFL 许可，可入库）
-②仅文档声明字体安装前置 ③Google Fonts CDN（离线不可用，排除）。
-倾向：①——OFL 字体子集化后每平台 ~100KB，模板 `@font-face` 引用，彻底可复现。
+### T2 截图 HTML 的字体 — `done`
+决策：自托管 OFL woff2。Cascadia v2407.24 + JetBrains Mono v2.304 入库
+`assets/fonts/`，@font-face 三级优先（本地 → 系统栈 → 等宽），中文走系统回退；
+SF Mono 非 OFL 不再分发。遗留：Cascadia 变量字体 >100KB 可再子集化；
+mac/linux 主机渲染补验。
 
-### T3 实验报告图片嵌入 — `discussing`
-变更提案：[openspec/changes/report-image-embedding/](../openspec/changes/report-image-embedding/)
-（提案已给图注/压缩/中文字体的候选默认值，待确认）
-现状：截图存 `outputs/<exp>/screenshots/`，MD 引用，DOCX 导出时靠官方 docx skill
-插图。问题：未定义图注、编号、尺寸约束与失败回退。
-待讨论点：图注格式（图1-1 式编号 vs 无编号）、自动压缩、中文图注字体。
+### T3 实验报告图片嵌入 — `done`（规则级）
+决策：图注 `图 N-M 说明`（zh）/ `Figure N-M: caption`（en）居中 10.5pt 不加粗；
+PNG、宽 ≤16cm、相对路径引用、>2MB 压缩、缺图占位。见 `references/export-guide.md`。
+遗留：压缩阈值固定 2MB 未可配置；docx/pdf 样本级验证未产出。
 
-### T4 实验报告导出格式 — `discussing`
-变更提案：[openspec/changes/report-export-formats/](../openspec/changes/report-export-formats/)
-候选：DOCX（官方 skill，兼容性最好）优先级是否保持；PDF 走 docx→pdf 还是
-LaTeX（与 T5 联动）；是否提供 MD-only 快速路径。默认建议：md + docx 双交付，
-pdf 按需。
+### T4 实验报告导出格式 — `done`（规则级）
+决策：默认 md + docx 双交付；pdf 按需走 docx→pdf（优先）或官方 pdf skill
+（备选）——理由：避免为长尾 pdf 需求引入 LaTeX 全链路依赖；草稿迭代 md-only；
+docx 失败交付 md + 失败说明。遗留：样本级双交付与 pdf 样本未产出。
 
-### T5 LaTeX / 数学公式支持 — `discussing`
-变更提案：[openspec/changes/latex-math-support/](../openspec/changes/latex-math-support/)
-范围界定：报告内公式（`$...$` 渲染进 DOCX/PDF）vs 全文 LaTeX 模板（cspaper/实验
-报告 LaTeX 类）两个层次。候选：①公式层：DOCX 用 OMML 转换（官方 skill 能力），
-MD 保留 LaTeX 源 ②全文层：引入 pdf skill 的 LaTeX 管线做可选模板。
-倾向：先①后②，公式是刚需，全文 LaTeX 是长尾。
+### T5 LaTeX / 数学公式支持 — `done`（公式层）
+决策：先公式层后全文层。源 MD 保留 `$...$`/`$$...$$`，docx 导出 OMML
+（官方 skill 优先 / pandoc 回退 / 双失败代码字体+交付注明）；zh/en 模板已含
+公式示例。**全文 LaTeX 模板暂缓**，出现真实需求再单开 change。
+遗留：含公式样本 docx/pdf 未产出、失败公式场景未演练。
 
-### T6 图片生成 tool 可配置接入 — `discussing`
-变更提案：[openspec/changes/image-gen-tool/](../openspec/changes/image-gen-tool/)
-设想：用户可自由配置图片生成 API（如 image2 类服务），skill 需要插图（实验装置
-示意图、流程图）时通过 tool 调用。
-候选形态：①`~/.auto-college/image-gen.json` 配置 provider/base_url/model/api_key
-+ 统一 `scripts/image_gen.py` 适配层（OpenAI-compatible 格式优先，多数服务兼容）
-②等 agent 平台原生 image tool，只做 prompt 模板 ③两者都做：有配置走 ①，
-否则降级 ②。
-倾向：③——配置驱动 + 优雅降级，与三档渲染架构同一设计哲学。
-安全问题：api_key 只存本地配置，模板/文档中绝不落盘。
+### T6 图片生成 tool 可配置接入 — `done`（适配层）
+决策：配置驱动 + 优雅降级。`~/.auto-college/image-gen.json`（schema 见
+`configs/image-gen.example.json`）+ `scripts/image_gen.py`（纯标准库，
+OpenAI-compatible）；退出码 0/1/2；`--emit-prompt` 无配置产出可复用 prompt
+文件；api_key 全程脱敏。遗留：真实服务首次调通与端到端样本报告待用户配置后补验。
 
-### T7 安装目录策略 — `decided` → `done`（2026-10-08）
-变更提案：[openspec/changes/agent-neutral-install/](../openspec/changes/agent-neutral-install/)
-（status: implemented，tasks 已全勾）
-决策：安装器按环境自动检测（`.claude` → Claude Code，`.cursor` → Cursor）；
-命令行/未知环境默认装 `.agent/skills`（不存在则新建），不再假设 Claude。
-理由：仓库是 agent 中立的 skill 集合，不应绑定单一 agent 生态。
-已实现：`setup.js` 已改；README 安装说明同步。**"交由 agent 依据环境自动配置"
-的交互话术待补**（安装提示中引导 agent 自检环境）。
+### T7 安装目录策略 — `done`
+决策：安装器环境自动检测（`.claude`/`.cursor`），未知环境默认 `.agent/skills`
+自动新建；README 引导 agent 自检环境后安装。
 
-## 史诗（Epic）：个人工作流体系建设 — `discussing`
+## 史诗（Epic）：个人工作流体系建设 — 第一循环完成
 
-目标：在本仓库构筑一套**可迁移的个人工作流体系**——跨项目复用的文档化方法
-（议题跟踪、规格驱动、验证闭环、多模态协作、安全钩子共存策略），并在日常
-工作中持续验证迭代。
+目标：可迁移的个人工作流体系（议题跟踪、规格驱动、验证闭环、多模态协作、
+安全钩子共存），在日常工作中持续验证迭代。
 
-初步设计（已定稿并落地）：
-- 方法选型：OpenSpec 为主，吸收 BMAD story 验收粒度（见下节结论）
-- 最小落地：**已完成（2026-10-09）**——`openspec/project.md` 约定 +
-  terminal-screenshot / lab-report 两份 specs 基线 + T1-T7 七个 changes
-  （纯 Markdown，不依赖 openspec CLI）；roadmap.md 转为索引与决策记录
-- 验证方式：T1-T6 六个真实议题就是第一批工作负载，用它们跑通流程再抽象
+**第一循环（2026-10-08 → 10-09）已完成并验证**：roadmap 建档 → BMAD vs
+OpenSpec 调研（结论：OpenSpec 为主 + BMAD story 验收粒度）→ openspec/ 落地 →
+多子代理分区并行实现 T1-T7 → 人工分区 review + 视觉子智能体验收 →
+spec delta 合并、changes 归档（本文件即是该循环的收尾产物）。
+验证结论：提案→实现→验收→归档全链路可用；可迁移件 = `openspec/project.md`
+约定 + specs/changes 结构 + 本 roadmap 模板。
 
-### BMAD vs OpenSpec 调研结论 — `discussing`（待维护者拍板）
+### BMAD vs OpenSpec 调研结论 — `decided`（2026-10-09 拍板：OpenSpec）
 
-一句话定位：**BMAD** 是全生命周期敏捷 AI 开发框架（Analyst/PM/Architect/SM/Dev/QA
-角色代理 + prd/architecture/story 工件，重规划）；**OpenSpec** 是轻量"人与 AI 的
-契约层"（`openspec/` 下 project.md + specs/ + changes/ 提案驱动，纯 Markdown）。
+一句话定位：**BMAD** 是全生命周期敏捷 AI 开发框架（角色代理 + prd/story 工件，
+重规划）；**OpenSpec** 是轻量"人与 AI 的契约层"（project.md + specs/ + changes/
+提案驱动，纯 Markdown）。
 
 | 维度 | BMAD (V6) | OpenSpec |
 |---|---|---|
-| 根目录 | `.bmad/` | `openspec/` |
-| 核心工件 | agents/workflows/templates + prd、story | project.md、specs/、changes/{proposal,tasks} |
-| 工具集成 | 按 IDE 生成文件（Cursor/Claude/Windsurf…） | 只靠 AGENTS.md + Markdown，任何 agent 零成本 |
-| 单人维护 | 偏重（为团队协作设计） | 明显更优 |
+| 单人维护 | 偏重（为团队设计） | 明显更优 |
+| 工具集成 | 按 IDE 生成文件 | AGENTS.md + Markdown，任何 agent 零成本 |
 | 可迁移 | 方法在框架里，升级即变 | 结构即方法，复制文件夹即迁移 |
 
-**调研结论：OpenSpec 为主，吸收 BMAD 的 story 验收粒度。** 理由：①本仓库场景
-"存量仓库 + 一批待议功能议题"与 change 提案模型一一对应；②议题多为中小特性，
-BMAD 全流程过重；③可迁移诉求上 OpenSpec 结构即方法。
-
-最小落地（已执行，2026-10-09）：两个 skill 各建 specs 基线 → T1-T7 各建一个
-change 文件夹（proposal.md + tasks.md + spec.md 增量）。结构自洽、纯 Markdown，
-不依赖 openspec CLI（装了 CLI 可用 `openspec validate --strict` 作额外门槛）。
-roadmap.md 自此转为索引与决策记录，跟踪双轨问题解除。
-
 来源：[BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) ·
-[BMAD docs](https://docs.bmad-method.org) ·
 [OpenSpec](https://github.com/Fission-AI/OpenSpec) · [openspec.dev](https://openspec.dev)
 
 ## 变更记录
 
-- 2026-10-09 OpenSpec 落地：建 `openspec/`（project.md 约定、两个 skill 的
-  specs 基线、T1-T7 七个 changes 提案）；根目录新增 `AGENTS.md` 入口说明；
-  本文件转为索引与决策记录；T3/T4/T5 由 `open` 升级 `discussing`（提案已给
-  候选默认值，待确认）。
-- 2026-10-08 建立；T7 决策并实现；清理本地 `.mimosa/`（已 gitignore）；
-  BMAD vs OpenSpec 调研完成并入（倾向 OpenSpec 为主，待拍板）。
+- 2026-10-09 T1-T7 实现完成并归档（spec delta 合并进 specs 基线，changes 目录
+  移除，git 历史留档）；视觉子智能体验收三平台示例（发现并修复 Windows 长命令
+  裁切：正文改 pre-wrap）；image_gen 补 `--emit-prompt` 与示例配置；公式示例入
+  zh/en 模板；Epic 第一循环闭环。
+- 2026-10-09 OpenSpec 落地（project.md、两 specs 基线、T1-T7 七 changes、
+  AGENTS.md）；本文件转为索引。
+- 2026-10-08 建立；T7 决策并实现；BMAD vs OpenSpec 调研并入。

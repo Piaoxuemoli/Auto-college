@@ -16,6 +16,7 @@
 |------|------|----------|------------------|------------------------|------|
 | `report-template-zh.md` | 默认中文实验报告模板 | zh | 无课程/学科模板命中时的中文默认 | 十段式：名称、项目名称、目的、内容、器材、步骤、数据结果分析、结论、心得、改进建议 | 内置默认 |
 | `report-template-en.md` | Default English Lab Report Template | en | 无课程/学科模板命中时的英文默认 | 10 sections: name, project, objective, content, equipment, procedure, results & analysis, conclusion, reflections, suggestions | 内置默认 |
+| `computer-network-template.md` | 计算机网络实验报告模板（演示学科模板） | zh | 计算机网络课程实验 | 十段式 + 网络拓扑/IP 规划表（五）+ 捕获数据分析字段（七） | 学科默认（演示） |
 
 ## 课程自定义模板
 

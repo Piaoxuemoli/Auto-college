@@ -327,7 +327,29 @@ def build_parser() -> argparse.ArgumentParser:
                         help="config path override (default: "
                              "$AUTO_COLLEGE_IMAGE_GEN or "
                              "~/.auto-college/image-gen.json)")
+    parser.add_argument("--emit-prompt", action="store_true",
+                        help="when the config is unavailable, write a reusable "
+                             "structured prompt file (<output>.prompt.md) "
+                             "instead of failing")
     return parser
+
+
+def emit_prompt_file(out_path: pathlib.Path, prompt: str, size: str) -> pathlib.Path:
+    """Degradation path: no config — write a reusable structured prompt file
+    the caller (or any image tool) can act on later."""
+    prompt_path = out_path.with_suffix(".prompt.md")
+    prompt_path.write_text(
+        "# Illustration prompt (image generation unavailable)\n\n"
+        f"- **Prompt:** {prompt}\n"
+        f"- **Size:** {size}\n"
+        "- **Intended output:** the missing illustration referenced by the "
+        "report (see the figure caption that pointed here)\n"
+        "- **Usage:** fill ~/.auto-college/image-gen.json "
+        "(configs/image-gen.example.json) and re-run image_gen.py with this "
+        "prompt, or hand it to any available image tool.\n",
+        encoding="utf-8",
+    )
+    return prompt_path
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -353,6 +375,11 @@ def main(argv: list[str] | None = None) -> int:
     try:
         config = load_config(resolve_config_path(args.config))
     except UnavailableError as exc:
+        if args.emit_prompt:
+            prompt_path = emit_prompt_file(out_path, prompt,
+                                           size or DEFAULT_SIZE)
+            print(f"OK (degraded): no config ({exc}); wrote {prompt_path}")
+            return 0
         print(f"ERROR: {exc}", file=sys.stderr)
         print("HINT: image generation is unavailable — skip the illustration "
               "or fall back to built-in image capability; do not abort the "
