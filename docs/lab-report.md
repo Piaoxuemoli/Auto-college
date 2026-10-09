@@ -14,6 +14,7 @@ Never invents results; destructive commands always require confirmation.
 | `standard-executable` | 材料含可执行命令 → 执行实验并记录 / materials include runnable commands |
 | `data-provided` | 用户已有数据、截图、日志 / user already has data |
 | `paper-only` | 理论/总结类报告 / theoretical writeup |
+| 导出格式 / export | 默认 **md + docx** 双交付；pdf 按需；md-only 快速路径 / default md + docx, pdf on demand（见 `references/export-guide.md`） |
 
 1. **建档**：`python lab-report/scripts/profile_config.py status` 读取
    `~/.auto-college/lab-report/profile.json`（缺什么问什么，只问一次）。
@@ -23,8 +24,8 @@ Never invents results; destructive commands always require confirmation.
    运行证据统一用 **terminal-screenshot** skill 生成，存入 `screenshots/`。
 4. **成稿**：课程模板（`scripts/course_templates.py get/save`，存于
    `~/.auto-college/lab-report/course_templates.json`）→ 用户模板 → 内置十段式
-   默认模板（`references/report-template-zh.md` / `-en.md`）。需要时用官方
-   docx/pdf skill 导出。
+   默认模板（`references/report-template-zh.md` / `-en.md`）。默认交付 md + docx
+   （pdf 按需）；公式转 OMML、图片嵌入规范见 `references/export-guide.md`。
 
 ## 使用 / Usage
 
@@ -38,6 +39,7 @@ Never invents results; destructive commands always require confirmation.
 lab-report/
 ├── SKILL.md                      # 要求 + 流程 / requirements & workflow
 ├── references/
+│   ├── export-guide.md           # 导出格式/公式/图片规范 / export, math & image rules
 │   ├── report-template-zh.md     # 中文十段式模板 / Chinese 10-section template
 │   └── report-template-en.md     # 英文模板 / English template
 ├── scripts/
@@ -51,6 +53,8 @@ lab-report/
 
 - **terminal-screenshot** — 运行证据截图 / run-evidence screenshots
 - Anthropic official `docx` / `pdf` skills — 材料读取与导出 / reading & export
+- **references/export-guide.md** — 导出格式决策、公式 OMML 转换、图片嵌入规范 /
+  export formats, OMML math, image embedding
 - Python 3
 
 ## 许可证 / License
