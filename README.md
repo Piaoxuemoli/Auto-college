@@ -23,7 +23,13 @@ workflow. Terminal output in, indistinguishable-from-real PNG out.
 curl -fsSL https://raw.githubusercontent.com/Piaoxuemoli/Auto-college/master/setup.js | node
 ```
 
-或让 Agent 执行："从 https://github.com/Piaoxuemoli/Auto-college 安装 skills"。
+安装目录策略：脚本自动检测 agent 环境——存在 `.claude` 装到 Claude
+Code，存在 `.cursor` 装到 Cursor；未知环境（如纯命令行）默认装
+`.agent/skills`，目录不存在则自动创建。
+
+或让 Agent 执行："检测你当前运行的 agent 环境（.claude/.cursor/其他），
+然后把 https://github.com/Piaoxuemoli/Auto-college 的 skills 安装到
+对应目录"。
 
 ## 使用 / Usage
 
