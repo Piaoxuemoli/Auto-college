@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "note": "This is a readable format specification, not a JSON Schema validator. Records are JSONL objects. Paths are project-relative. Never copy these descriptions as research evidence.",
+  "references.jsonl": {
+    "id": "unique citation key",
+    "title": "actual title",
+    "authors": ["actual authors in order"],
+    "year": "actual year",
+    "venue": "actual publication venue or preprint repository",
+    "doi": "actual DOI if available",
+    "url": "primary source URL",
+    "status": "verified | partial | unresolved | excluded",
+    "checked_at": "actual ISO date",
+    "verification_file": "ledger/verification/actual-note.md"
+  },
+  "claims.jsonl": {
+    "id": "unique claim ID",
+    "text": "actual claim",
+    "role": "primary | mechanism | boundary | background",
+    "kind": "empirical | theoretical | literature | proposal",
+    "status": "supported | refuted | inconclusive | untested",
+    "reference_ids": ["verified citation key if relevant"],
+    "evidence_files": ["actual project-relative evidence path"],
+    "numbers": [
+      {
+        "source_file": "actual JSON or JSONL result file",
+        "key": "dotted numeric key",
+        "where": {"method": "actual method"},
+        "operation": "identity | mean | std | sum | count",
+        "scale": 1,
+        "value": "number exactly as reported in the paper",
+        "tolerance": 0.000001,
+        "unit_id_key": "optional key for one-row-per-unit checks; aggregate appropriately first"
+      }
+    ]
+  },
+  "RUN_STATE.json": {
+    "phase": "S0-S8",
+    "deliverable_level": "plan | draft | complete | submission_candidate",
+    "manuscript": "paper/main.tex",
+    "checks": {
+      "scientific_review": "pending | passed | failed | not_applicable",
+      "citation_review": "pending | passed | failed | not_applicable",
+      "numeric_review": "pending | passed | failed | not_applicable",
+      "compilation": "pending | passed | failed | not_applicable",
+      "visual_review": "pending | passed | failed | not_applicable"
+    },
+    "check_evidence": {"scientific_review": "reviews/actual-review.md"},
+    "not_applicable_reasons": {"numeric_review": "actual reason only if no numerical claims"},
+    "next_action": "one concrete pending action",
+    "autostart": false
+  }
+}
