@@ -5,8 +5,9 @@ openspec CLI，靠本约定 + 纯 Markdown 即可运作规格驱动流程。
 
 ## 仓库定位
 
-agent 中立的 skill 集合：terminal-screenshot（终端输出 → 逼真 PNG 证据截图）
-与 lab-report（实验报告流程）。详见 README.md。
+agent 中立的 skill 集合：terminal-screenshot（终端输出 → 逼真 PNG 证据截图）、
+lab-report（实验报告流程），以及互相独立的科研工作流三件套 auto-research /
+paper-writing / group-meeting-prep。详见 README.md。
 
 ## 目录与流程总览
 
