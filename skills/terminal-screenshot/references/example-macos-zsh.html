@@ -24,6 +24,11 @@
 
   body {
     background: #171c29; margin: 0;
+    /* Deliberately NOT self-hosted: SF Mono is Apple-proprietary (not an
+       open license like OFL), so it cannot be redistributed in assets/fonts/.
+       macOS keeps the system stack; on other hosts Menlo/Consolas monospace
+       fallbacks keep the metrics close. See references/html-templates.md
+       "Local Fonts" for the self-hosted faces we do ship. */
     font-family: 'SF Mono','Menlo','Monaco','PingFang SC',monospace;
   }
   .window {

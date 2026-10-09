@@ -3,6 +3,44 @@
 <head>
 <meta charset="utf-8">
 <style>
+  /* Self-hosted OFL fonts (assets/fonts/cascadia-code/, v2407.24): local file
+     shadows the system lookup, so 'Cascadia Mono'/'Cascadia Code' resolve to
+     the bundled woff2 even on hosts without them. First URL fits this file's
+     location (references/), second fits render.py's copy under
+     outputs/YYYY-MM-DD/HHMMSS-<slug>/. */
+  @font-face {
+    font-family: 'Cascadia Mono';
+    src: url('../assets/fonts/cascadia-code/CascadiaMono.woff2') format('woff2'),
+         url('../../../assets/fonts/cascadia-code/CascadiaMono.woff2') format('woff2');
+    font-weight: 200 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cascadia Mono';
+    src: url('../assets/fonts/cascadia-code/CascadiaMonoItalic.woff2') format('woff2'),
+         url('../../../assets/fonts/cascadia-code/CascadiaMonoItalic.woff2') format('woff2');
+    font-weight: 200 700;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cascadia Code';
+    src: url('../assets/fonts/cascadia-code/CascadiaCode.woff2') format('woff2'),
+         url('../../../assets/fonts/cascadia-code/CascadiaCode.woff2') format('woff2');
+    font-weight: 200 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Cascadia Code';
+    src: url('../assets/fonts/cascadia-code/CascadiaCodeItalic.woff2') format('woff2'),
+         url('../../../assets/fonts/cascadia-code/CascadiaCodeItalic.woff2') format('woff2');
+    font-weight: 200 700;
+    font-style: italic;
+    font-display: swap;
+  }
+
   html, body { margin: 0; overflow: hidden; }
   html { background: #0B1220; }
 

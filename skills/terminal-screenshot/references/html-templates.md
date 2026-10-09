@@ -20,6 +20,100 @@ html, body {
 
 ---
 
+## Local Fonts (self-hosted OFL woff2)
+
+The skill ships OFL-licensed woff2 files under `assets/fonts/` so renders no
+longer drift when the rendering host lacks the platform fonts. Reference them
+with `@font-face` at the top of every template's `<style>` block:
+
+```css
+/* Self-hosted fonts (OFL 1.1) — assets/fonts/, see fonts README for versions.
+   Each face lists two URLs: the first resolves when this HTML is previewed in
+   references/, the second when render.py copies it into
+   outputs/YYYY-MM-DD/HHMMSS-<slug>/ before rasterizing. The browser uses the
+   first URL that loads; a 404 is skipped silently. */
+@font-face {
+  font-family: 'Cascadia Mono';             /* Windows Terminal default face */
+  src: url('../assets/fonts/cascadia-code/CascadiaMono.woff2') format('woff2'),
+       url('../../../assets/fonts/cascadia-code/CascadiaMono.woff2') format('woff2');
+  font-weight: 200 700;                     /* variable font */
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cascadia Mono';
+  src: url('../assets/fonts/cascadia-code/CascadiaMonoItalic.woff2') format('woff2'),
+       url('../../../assets/fonts/cascadia-code/CascadiaMonoItalic.woff2') format('woff2');
+  font-weight: 200 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cascadia Code';             /* ligature variant */
+  src: url('../assets/fonts/cascadia-code/CascadiaCode.woff2') format('woff2'),
+       url('../../../assets/fonts/cascadia-code/CascadiaCode.woff2') format('woff2');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('../assets/fonts/cascadia-code/CascadiaCodeItalic.woff2') format('woff2'),
+       url('../../../assets/fonts/cascadia-code/CascadiaCodeItalic.woff2') format('woff2');
+  font-weight: 200 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';            /* Linux/SSH presets */
+  src: url('../assets/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2'),
+       url('../../../assets/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/jetbrains-mono/JetBrainsMono-Bold.woff2') format('woff2'),
+       url('../../../assets/fonts/jetbrains-mono/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2'),
+       url('../../../assets/fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+```
+
+Font priority rules:
+
+1. **Local woff2 first** — a declared `@font-face` shadows any system font with
+   the same family name, so the stacks below (which lead with `'Cascadia Mono'`
+   / `'JetBrains Mono'`) automatically resolve to the self-hosted files on
+   every platform, including hosts without those fonts installed.
+2. **Platform system fonts second** — the existing stacks are kept verbatim as
+   fallback for weights/files not bundled (and for any family with no local
+   face, e.g. SF Mono / Menlo / Ubuntu Mono).
+3. **Generic `monospace` last** — never removed.
+
+Notes:
+
+- Windows Terminal transcripts use **Cascadia Mono** (no ligatures) before
+  `Cascadia Code`; ligatures would render `--flag` as a dash and break realism.
+- **macOS stays on the system stack** (`'SF Mono','Menlo','Monaco',...`):
+  SF Mono is Apple-proprietary and NOT open-license, so it cannot be
+  self-hosted. `font-display: swap` keeps render-vs-final drift minimal there.
+- **No CJK subsets are bundled** (they would dwarf the skill); Chinese glyphs
+  fall through the stack to YaHei / PingFang / Noto Sans CJK as before.
+- Keep `font-display: swap` so a slow/failed font load still renders text.
+
+---
+
 ## High-Fidelity Presets
 
 Use these presets before the older generic templates. They encode the real visual cues

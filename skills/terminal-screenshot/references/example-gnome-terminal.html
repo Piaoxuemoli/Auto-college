@@ -2,6 +2,36 @@
 <html lang="zh-CN">
 <head><meta charset="UTF-8">
 <style>
+  /* Self-hosted OFL font (assets/fonts/jetbrains-mono/, v2.304): local file
+     shadows the system lookup, so 'JetBrains Mono' resolves to the bundled
+     woff2 even on hosts without it. First URL fits this file's location
+     (references/), second fits render.py's copy under
+     outputs/YYYY-MM-DD/HHMMSS-<slug>/. */
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../assets/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2'),
+         url('../../../assets/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../assets/fonts/jetbrains-mono/JetBrainsMono-Bold.woff2') format('woff2'),
+         url('../../../assets/fonts/jetbrains-mono/JetBrainsMono-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../assets/fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2'),
+         url('../../../assets/fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
   html, body { overflow: hidden; margin: 0; padding: 0; }
   html { background: #17181f; }
   ::-webkit-scrollbar { display: none; }
@@ -21,7 +51,9 @@
 
   body {
     background: #17181f; margin: 0;
-    font-family: 'Ubuntu Mono','DejaVu Sans Mono','Consolas','Microsoft YaHei',monospace;
+    /* Local self-hosted JetBrains Mono first (see @font-face above); the
+       original system stack stays as fallback. */
+    font-family: 'JetBrains Mono','Ubuntu Mono','DejaVu Sans Mono','Consolas','Microsoft YaHei',monospace;
   }
   .window {
     background: #1e1e1e; border-radius: 12px; overflow: hidden;

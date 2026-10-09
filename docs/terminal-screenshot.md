@@ -87,6 +87,7 @@ terminal-screenshot/
 │   └── freeze-base.json        # Tier 1 freeze 视觉配置 / freeze visual config
 ├── assets/
 │   ├── golden/                 # 校验金标准（含许可说明）/ validation goldens
+│   ├── fonts/                  # 自托管 OFL 字体（Cascadia/JetBrains Mono woff2 + 许可）/ self-hosted OFL fonts
 │   ├── macos-traffic-lights/   # CC0 红绿灯 SVG / CC0 traffic-light SVGs
 │   └── symbolic/               # CC0 自绘 GNOME 图标 / CC0 self-drawn GNOME icons
 ├── references/
@@ -115,7 +116,11 @@ terminal-screenshot/
 
 - 工具安装链：freeze（brew/go/scoop）、termframe（brew/cargo/scoop）；
   Windows 无官方源时提示手动安装，Tier 3 回退全平台可用。
-- HTML 模板使用平台专属字体栈（Cascadia Mono / SF Mono / JetBrains Mono + 中文回退）。
+- **字体已自托管（OFL 1.1）**：Cascadia Code/Mono（v2407.24）与 JetBrains Mono
+  （v2.304）的 woff2 存于 `assets/fonts/`，Tier 3 模板通过 `@font-face`
+  （`font-display: swap`）本地优先加载——渲染主机缺字体不再产生观感漂移；
+  系统字体栈保留为回退（本地 woff2 → 平台系统字体 → 通用等宽）。SF Mono
+  非 OFL 不可再分发，macOS 仍走系统栈。无 CJK 子集，中文回退系统字体。
 - 脚本统一 pathlib 与 `file:///` URL，Windows/macOS/Linux 一致。
 
 ## 许可证 / License
