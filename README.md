@@ -1,12 +1,26 @@
 # Auto-college
 
-逼真终端截图生成器 + 实验报告流程 + 科研工作流三件套（研究实验 / 论文写作 /
-组会准备）。核心是 terminal-screenshot skill：把终端
-命令输出渲染成与实机无异的 PNG 证据截图。
+一组 **agent 中立**的科研与学习工作流 skills：让 AI 助手产出
+**可核验的证据**而非"看起来对"的结果——逼真终端截图、实验报告、
+研究实验、论文写作、组会准备，五个 skill 各自独立、可单独安装。
 
-Realistic terminal screenshot generator (core), a streamlined lab-report
-workflow, and a decoupled research trio (auto-research / paper-writing /
-group-meeting-prep). Terminal output in, indistinguishable-from-real PNG out.
+An agent-neutral skill collection for research and coursework: make AI
+assistants produce **verifiable evidence** instead of plausible-looking
+output — realistic terminal screenshots, lab reports, research experiments,
+paper writing, and group-meeting prep. Each skill is decoupled and
+installable on its own.
+
+## 理念 / Why
+
+AI 助手的主要风险不是不会做，而是产出无法核验：截图不像真的、引用查无此文、
+数据没有出处。本仓库的每个 skill 都把"可核验"写进流程：
+
+- **证据优先**：渲染结果对照官方规格或实机金标准校验，不接受"差不多"
+- **逐条核对**：文献引用按 Crossref / ACL Anthology / arXiv 等来源逐条验证并留台账
+- **明确边界**：未验证的内容标注为待验证，不把占位当结论
+
+兼容任何支持 skills 的 agent 环境（Claude Code、Cursor 等），
+不绑定特定模型或平台。
 
 ## 效果 / Examples
 
@@ -62,6 +76,17 @@ Code，存在 `.cursor` 装到 Cursor；未知环境（如纯命令行）默认�
   图职责先行路由表、统计图标准、可编辑图示验收、汇报页四段备注与版本约定。
 
 后三者互相独立（无跨 skill 引用），可单独安装使用。
+
+## 仓库结构 / Development
+
+```text
+skills/       五个 skill 源码（agent 中立，无平台私有字段）
+docs/         各 skill 导航文档与 roadmap（议题索引与决策记录）
+openspec/     变更提案与能力基线（proposal → tasks → spec delta → 归档）
+setup.js      安装器（自动检测 agent 环境）
+```
+
+贡献与约定见 [AGENTS.md](AGENTS.md) 与 [openspec/project.md](openspec/project.md)。
 
 ## 许可 / License
 
